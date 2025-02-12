@@ -12,9 +12,10 @@ const MarketPage = () => {
           Bienvenido a la página de Productos
         </h1>
         <p className="text-lg text-gray-600 mb-6 max-w-lg">
-          Mazo div con los productos de todas las asociaciones, se puede ver el
+          Mazo div con los productos de todOS LOS PRODUCTOS , se puede ver el
           perfil de cada uno con un link al perfil de la asociación y también
-          hay filtros
+          hay filtros. Si es gestor aparece que puede quitar, añadir o editar
+          productos
         </p>
         <div className="flex space-x-4">
           <Link

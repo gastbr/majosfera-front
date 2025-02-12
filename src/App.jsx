@@ -10,10 +10,12 @@ import LoginPage from "./pages/LoginPage";
 import AssociationProfilePage from "./pages/AssociationProfilePage";
 import AssociationRegisterPage from "./pages/AssociationRegisterPage";
 import RegisterProductPage from "./pages/RegisterProductPage";
-import ProductPage from "./pages/ProductPage";
-import FavouritePage from "./pages/FavouritePage";
-import OrderPage from "./pages/OrderPage";
-import PaymentPage from "./pages/PaymentPage";
+// import RegisterProductPage from "./pages/ProductCRUDPage";
+// import ProductPage from "./pages/ProductPage";
+// import FavouritePage from "./pages/FavouritePage";
+// import OrderPage from "./pages/OrderPage";
+// import PaymentPage from "./pages/PaymentPage";
+import AssociationCRUDPage from "./pages/AssociationCRUDPage";
 
 function App() {
   return (
@@ -30,7 +32,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/associations" element={<AssociationPage />} />
+        <Route path="/association" element={<AssociationPage />} />
         <Route path="/market" element={<MarketPage />} />
         <Route path="/associations-list" element={<AssociationListPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -38,18 +40,23 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route
-          path="/association-profile"
-          element={<AssociationProfilePage />}
-        />
-        <Route
           path="/association-register"
           element={<AssociationRegisterPage />}
         />
+        <Route path="/association-CRUD" element={<AssociationCRUDPage />} />
+        <Route
+          path="/association-profile"
+          element={<AssociationProfilePage />}
+        />
         <Route path="/register-product" element={<RegisterProductPage />} />
+        {/* 
+       
+
+                <Route path="/CRUD-product" element={<ProductCRUDPage />} />
         <Route path="/product" element={<ProductPage />} />
         <Route path="/favourite" element={<FavouritePage />} />
         <Route path="/order" element={<OrderPage />} />
-        <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/payment" element={<PaymentPage />} /> */}
       </Routes>
     </Router>
   );
