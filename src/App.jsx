@@ -10,11 +10,11 @@ import LoginPage from "./pages/LoginPage";
 import AssociationProfilePage from "./pages/AssociationProfilePage";
 import AssociationRegisterPage from "./pages/AssociationRegisterPage";
 import RegisterProductPage from "./pages/RegisterProductPage";
-// import RegisterProductPage from "./pages/ProductCRUDPage";
-// import ProductPage from "./pages/ProductPage";
-// import FavouritePage from "./pages/FavouritePage";
-// import OrderPage from "./pages/OrderPage";
-// import PaymentPage from "./pages/PaymentPage";
+import ProductCRUDPage from "./pages/ProductCRUDPage";
+import ProductPage from "./pages/ProductPage";
+import FavouritePage from "./pages/FavouritePage";
+import OrderPage from "./pages/OrderPage";
+import PaymentPage from "./pages/PaymentPage";
 import AssociationCRUDPage from "./pages/AssociationCRUDPage";
 
 function App() {
@@ -49,14 +49,11 @@ function App() {
           element={<AssociationProfilePage />}
         />
         <Route path="/register-product" element={<RegisterProductPage />} />
-        {/* 
-       
-
-                <Route path="/CRUD-product" element={<ProductCRUDPage />} />
+        <Route path="/CRUD-product" element={<ProductCRUDPage />} />
         <Route path="/product" element={<ProductPage />} />
         <Route path="/favourite" element={<FavouritePage />} />
         <Route path="/order" element={<OrderPage />} />
-        <Route path="/payment" element={<PaymentPage />} /> */}
+        <Route path="/payment" element={<PaymentPage />} />
       </Routes>
     </Router>
   );
