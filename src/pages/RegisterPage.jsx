@@ -1,32 +1,37 @@
 import React from "react";
 import { Link } from "react-router";
 
-const AssociationPage = () => {
+const RegisterPage = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
       <header className="w-full py-6 bg-white shadow-md text-center text-2xl font-bold">
-        Perfil de cada Asociacion
+        Registro de usuario
       </header>
       <main className="flex flex-col items-center text-center mt-10">
         <h1 className="text-4xl font-extrabold mb-4">
-          Bienvenido a la página de Una asociación
+          Bienvenido a la REGISTER PAGE
         </h1>
         <p className="text-lg text-gray-600 mb-6 max-w-lg">
-          Aquí solo aparece la info de la asociación seleccionada, con sus
-          productos si eso y un botón para volver a atrás o algo, no sé.
+          Hacer header, footer, y poner FORMULARIO con los datos del usuario
         </p>
         <div className="flex space-x-4">
           <Link
-            to="/"
+            to="/associations"
             className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-blue-700 transition"
           >
-            Inicio
+            Explorar asociaciones
           </Link>
           <Link
-            to="/associations"
-            className="bg-green-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-green-700 transition"
+            to="/eventos" //botón vacio
+            className="bg-yellow-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-blue-700 transition"
           >
-            Ver asociaciones
+            Explorar eventos
+          </Link>
+          <Link
+            to="/market"
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-blue-700 transition"
+          >
+            Explorar tienda
           </Link>
         </div>
       </main>
@@ -34,4 +39,4 @@ const AssociationPage = () => {
   );
 };
 
-export default AssociationPage;
+export default RegisterPage;

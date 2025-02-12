@@ -16,12 +16,6 @@ const LandingPage = () => {
         </p>
         <div className="flex space-x-4">
           <Link
-            to="/associations"
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-blue-700 transition"
-          >
-            Explorar asociaciones
-          </Link>
-          <Link
             to="/eventos" //botón vacio
             className="bg-yellow-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-blue-700 transition"
           >
@@ -32,6 +26,24 @@ const LandingPage = () => {
             className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-blue-700 transition"
           >
             Explorar tienda
+          </Link>
+          <Link
+            to="/associations-list"
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-blue-700 transition"
+          >
+            Explorar asociaciones
+          </Link>
+          <Link
+            to="/register"
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-blue-700 transition"
+          >
+            Registro
+          </Link>
+          <Link
+            to="/login"
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-blue-700 transition"
+          >
+            Login
           </Link>
         </div>
       </main>
