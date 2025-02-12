@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router";
 import LandingPage from "./pages/LandingPage";
+import AssociationPage from "./pages/AssociationPage";
+import MarketPage from "./pages/MarketPage";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
+        <Route path="/associations" element={<AssociationPage />} />
+        <Route path="/market" element={<MarketPage />} />
       </Routes>
     </Router>
   );
