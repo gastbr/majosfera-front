@@ -33,6 +33,18 @@ const LandingPage = () => {
             Contacto
           </Link>
           <Link
+            to="/favourite"
+            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
+          >
+            Favoritos
+          </Link>
+          <Link
+            to="/order"
+            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
+          >
+            Pedido
+          </Link>
+          <Link
             to="/profile"
             className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
           >

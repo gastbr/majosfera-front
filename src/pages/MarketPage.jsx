@@ -6,6 +6,7 @@ const MarketPage = ({ isGestor }) => {
   const [sortByPrice, setSortByPrice] = useState("asc");
   const [filterCategory, setFilterCategory] = useState("");
   const [filterAssociation, setFilterAssociation] = useState("");
+  const [favourites, setFavourites] = useState([]);
   const [products] = useState([
     {
       id: 1,
@@ -31,6 +32,14 @@ const MarketPage = ({ isGestor }) => {
 
   const handleSortChange = () => {
     setSortByPrice(sortByPrice === "asc" ? "desc" : "asc");
+  };
+
+  const toggleFavourite = (product) => {
+    setFavourites((prev) =>
+      prev.some((fav) => fav.id === product.id)
+        ? prev.filter((fav) => fav.id !== product.id)
+        : [...prev, product]
+    );
   };
 
   const filteredProducts = products
@@ -120,6 +129,18 @@ const MarketPage = ({ isGestor }) => {
                     Precio: {product.price}€
                   </p>
                   <div className="flex flex-col space-y-2">
+                    <button
+                      onClick={() => toggleFavourite(product)}
+                      className={`px-4 py-2 rounded-lg text-lg transition ${
+                        favourites.some((fav) => fav.id === product.id)
+                          ? "bg-red-600 hover:bg-red-700 text-white"
+                          : "bg-gray-300 hover:bg-gray-400 text-black"
+                      }`}
+                    >
+                      {favourites.some((fav) => fav.id === product.id)
+                        ? "Quitar de Favoritos"
+                        : "Añadir a Favoritos"}
+                    </button>
                     <Link
                       to={`/product/`}
                       // to={`/product/${product.id}`}
