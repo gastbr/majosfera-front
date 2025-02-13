@@ -53,7 +53,7 @@ const MarketPage = ({ isGestor }) => {
           to="/"
           className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
         >
-          Volver al inicio
+          Inicio
         </Link>
       </header>
 
@@ -121,13 +121,15 @@ const MarketPage = ({ isGestor }) => {
                   </p>
                   <div className="flex flex-col space-y-2">
                     <Link
-                      to={`/product/${product.id}`}
+                      to={`/product/`}
+                      // to={`/product/${product.id}`}
                       className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
                     >
                       Ver Producto
                     </Link>
                     <Link
-                      to={`/association/${product.association}`}
+                      to={`/association`}
+                      // to={`/association/${product.association}`}
                       className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
                     >
                       Ver Asociación

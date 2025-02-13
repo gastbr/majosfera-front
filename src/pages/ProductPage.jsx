@@ -12,7 +12,11 @@ const ProductPage = () => {
           Bienvenido a la ProductPage
         </h1>
         <p className="text-lg text-gray-600 mb-6 max-w-lg">
-          Aquí se ve la info del producto y se pone enlace a añadir al carrito
+          Aquí se ve la info del producto y se pone enlace a añadir al carrito,
+          también hay un enlace para ver el perfil de la asociacion que publico
+          el producto y también se puede volver a la página de market. datos de
+          producto: Categoría: Nombre Producto: Nombre Descripción* Precio Stock
+          Foto* IdCategoría
         </p>
         <div className="flex space-x-4">
           <Link

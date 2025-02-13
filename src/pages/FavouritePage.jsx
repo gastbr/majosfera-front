@@ -12,7 +12,9 @@ const FavouritePage = () => {
           Bienvenido a la FavouritePage
         </h1>
         <p className="text-lg text-gray-600 mb-6 max-w-lg">
-          El listado de todos los productos que el usuario marcó como favorito
+          El listado de todos los productos que el usuario marcó como favorito,
+          pudiendo revertir su elección si quiere y también pudiendo añadirlo al
+          carrito
         </p>
         <div className="flex space-x-4">
           <Link

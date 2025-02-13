@@ -12,7 +12,8 @@ const PaymentPage = () => {
           Bienvenido a la PaymentPage
         </h1>
         <p className="text-lg text-gray-600 mb-6 max-w-lg">
-          Aquí sale una simulación del pago, dirección y eso del usuario
+          Aquí sale una simulación del método de pago, dirección y datos del
+          usuario.
         </p>
         <div className="flex space-x-4">
           <Link
