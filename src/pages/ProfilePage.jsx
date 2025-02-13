@@ -41,9 +41,12 @@ const ProfilePage = () => {
           />
           <h2 className="text-2xl font-bold">Nombre Apellido</h2>
           <p className="text-lg text-amber-800">usuario@email.com</p>
-          <button className="mt-4 bg-amber-600 text-white px-6 py-2 rounded-lg hover:bg-amber-700 transition">
+          <Link
+            to="/profile-update"
+            className="bg-amber-600 text-white px-3 py-1 rounded-lg text-lg hover:bg-amber-700 transition"
+          >
             Modificar perfil
-          </button>
+          </Link>
         </div>
 
         {/* Opciones según el rol */}
