@@ -16,6 +16,7 @@ import FavouritePage from "./pages/FavouritePage";
 import OrderPage from "./pages/OrderPage";
 import PaymentPage from "./pages/PaymentPage";
 import AssociationCRUDPage from "./pages/AssociationCRUDPage";
+import ProfileCRUDPage from "./pages/ProfileCRUDPage";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/profile-update" element={<ProfileCRUDPage />} />
         <Route
           path="/association-register"
           element={<AssociationRegisterPage />}
