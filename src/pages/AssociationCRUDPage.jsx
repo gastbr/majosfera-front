@@ -12,7 +12,11 @@ const AssociationCRUDPage = () => {
           Bienvenido a la AssociationCRUDPage
         </h1>
         <p className="text-lg text-gray-600 mb-6 max-w-lg">
-          Aquí el admin tiene todo el poder del mundo
+          Aquí el admin tiene todo el poder del mundo, para modificar, quitar la
+          asociacion. En esta página aparecen todas las asoaciociones con una
+          barra de busqueda en la parte superior debajo del header. Y si pulsa
+          una asociacion en la misma pagina aparecen sus datos para modificarla
+          o eliminarla
         </p>
         <div className="flex space-x-4">
           <Link
