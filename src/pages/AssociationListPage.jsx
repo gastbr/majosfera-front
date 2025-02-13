@@ -54,7 +54,7 @@ const AssociationListPage = () => {
               <Link
                 to={`/association/`}
                 // to={`/association/${association.id}`}
-                className="bg-green-600 text-white px-6 py-2 rounded-lg text-lg hover:bg-green-700 transition"
+                className="bg-amber-600 text-white px-6 py-2 rounded-lg text-lg hover:bg-green-700 transition"
               >
                 Ver Asociación
               </Link>

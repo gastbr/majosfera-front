@@ -13,7 +13,8 @@ const RegisterProductPage = () => {
         </h1>
         <p className="text-lg text-gray-600 mb-6 max-w-lg">
           El gestor tiene acceso a esta página, aquí puede modificar, quitar, o
-          ver su producto
+          ver su producto, todo en esta misma página. También tiene una barra de
+          busqueda en la parte superior debajo del header.
         </p>
         <div className="flex space-x-4">
           <Link
