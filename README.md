@@ -1,3 +1,3 @@
-https://majosfera-front.vercel.app
+DEV Deploy: [Vercel](https://majosfera-front.vercel.app)
 
-https://majosfera-front.pages.dev/
+PROD Deploy: [Cloudflare](https://majosfera-front.pages.dev/)
