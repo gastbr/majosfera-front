@@ -46,6 +46,14 @@ const LoginPage = () => {
           >
             Iniciar sesión
           </button>
+          <div className="flex justify-center mt-6">
+            <Link
+              to="/register"
+              className="bg-amber-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-amber-700 transition"
+            >
+              Registrarse
+            </Link>
+          </div>
         </form>
       </main>
 

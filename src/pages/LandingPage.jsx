@@ -12,7 +12,10 @@ const LandingPage = () => {
           Bienvenido a la LADING PAGE
         </h1>
         <p className="text-lg text-gray-600 mb-6 max-w-lg">
-          Hacer header, footer, y poner contenido con carruseles o lo que sea
+          Hacer header, footer, y poner contenido con carruseles o lo que sea.
+          En el header quiero todos los botones que están aquí pero cambia
+          registro y login por perfil. Y debajo del carrusel pones login y
+          registro. Pon div con info y fotos también
         </p>
         <div className="flex space-x-4">
           <Link
