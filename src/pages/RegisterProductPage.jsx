@@ -13,7 +13,8 @@ const RegisterProductPage = () => {
         </h1>
         <p className="text-lg text-gray-600 mb-6 max-w-lg">
           El gestor tiene acceso a esta página, aquí por medio de un form puede
-          añadir un producto
+          añadir un producto. Los datos que pide son: Categoría: Nombre
+          Producto: Nombre Descripción* Precio Stock Foto* IdCategoría
         </p>
         <div className="flex space-x-4">
           <Link
