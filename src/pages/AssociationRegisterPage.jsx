@@ -13,7 +13,9 @@ const AssociationRegisterPage = () => {
         </h1>
         <p className="text-lg text-gray-600 mb-6 max-w-lg">
           EL registro del ADMIN, para crear asociaciones, como el registro de
-          usuarios pero con asociaciones
+          usuarios pero con asociaciones. Estos son los datos necesarios:
+          Asociación: Gestor: UserId_FK Name NIF Razón Social Dirección Email
+          Teléfono: FK_ asociación Telf: Descripción
         </p>
         <div className="flex space-x-4">
           <Link
