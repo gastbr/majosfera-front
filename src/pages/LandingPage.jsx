@@ -9,7 +9,7 @@ const LandingPage = () => {
         <h1 className="text-2xl font-bold">Marketplace de Asociaciones</h1>
         <div className="flex space-x-4">
           <Link
-            to="/eventos"
+            to="/"
             className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
           >
             Eventos
