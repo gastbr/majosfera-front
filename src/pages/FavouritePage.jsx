@@ -49,8 +49,16 @@ const FavouritePage = () => {
           {favourites.map((product) => (
             <div
               key={product.id}
-              className="bg-white p-6 rounded-lg shadow-md text-center"
+              className="relative bg-white p-6 rounded-lg shadow-md text-center"
             >
+              {/* Favorite Icon */}
+              <button
+                onClick={() => removeFavourite(product.id)}
+                className="absolute top-3 right-3 text-2xl"
+              >
+                <span className="text-red-600">❤️</span>
+              </button>
+
               <img
                 src={product.image}
                 alt={product.name}
@@ -63,12 +71,6 @@ const FavouritePage = () => {
               <div className="flex flex-col space-y-2">
                 <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
                   Añadir al Carrito
-                </button>
-                <button
-                  onClick={() => removeFavourite(product.id)}
-                  className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
-                >
-                  Quitar de Favoritos
                 </button>
               </div>
             </div>

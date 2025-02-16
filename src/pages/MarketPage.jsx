@@ -117,8 +117,20 @@ const MarketPage = ({ isGestor }) => {
               {filteredProducts.map((product) => (
                 <div
                   key={product.id}
-                  className="bg-white p-6 rounded-lg shadow-md text-center"
+                  className="relative bg-white p-6 rounded-lg shadow-md text-center"
                 >
+                  {/* Favorite Icon */}
+                  <button
+                    onClick={() => toggleFavourite(product)}
+                    className="absolute top-3 right-3 text-2xl"
+                  >
+                    {favourites.some((fav) => fav.id === product.id) ? (
+                      <span className="text-red-600">❤️</span>
+                    ) : (
+                      <span className="text-gray-400">🤍</span>
+                    )}
+                  </button>
+
                   <img
                     src={product.image}
                     alt={product.name}
@@ -129,28 +141,14 @@ const MarketPage = ({ isGestor }) => {
                     Precio: {product.price}€
                   </p>
                   <div className="flex flex-col space-y-2">
-                    <button
-                      onClick={() => toggleFavourite(product)}
-                      className={`px-4 py-2 rounded-lg text-lg transition ${
-                        favourites.some((fav) => fav.id === product.id)
-                          ? "bg-red-600 hover:bg-red-700 text-white"
-                          : "bg-gray-300 hover:bg-gray-400 text-black"
-                      }`}
-                    >
-                      {favourites.some((fav) => fav.id === product.id)
-                        ? "Quitar de Favoritos"
-                        : "Añadir a Favoritos"}
-                    </button>
                     <Link
-                      to={`/product/`}
-                      // to={`/product/${product.id}`}
+                      to={`/product/${product.id}`}
                       className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
                     >
                       Ver Producto
                     </Link>
                     <Link
                       to={`/association`}
-                      // to={`/association/${product.association}`}
                       className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
                     >
                       Ver Asociación
