@@ -91,13 +91,13 @@ const LandingPage = () => {
         {/* Sección de Login y Registro */}
         <div className="flex space-x-4 mt-6">
           <Link
-            to="https://miriam.informaticamajada.es/login"
+            to={`${import.meta.env.VITE_API_URL}/login`}
             className="bg-amber-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-amber-700 transition"
           >
             Login
           </Link>
           <Link
-            to="https://miriam.informaticamajada.es/register"
+            to={`${import.meta.env.VITE_API_URL}/register`}
             className="bg-amber-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-amber-700 transition"
           >
             Registro
