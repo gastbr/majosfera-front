@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router";
 
 const LandingPage = () => {
@@ -92,13 +91,13 @@ const LandingPage = () => {
         {/* Sección de Login y Registro */}
         <div className="flex space-x-4 mt-6">
           <Link
-            to="/login"
+            to="https://miriam.informaticamajada.es/login"
             className="bg-amber-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-amber-700 transition"
           >
             Login
           </Link>
           <Link
-            to="/register"
+            to="https://miriam.informaticamajada.es/register"
             className="bg-amber-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-amber-700 transition"
           >
             Registro
