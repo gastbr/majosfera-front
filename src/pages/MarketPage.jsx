@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router";
 
 const API_URL = import.meta.env.VITE_API_URL; // URL del backend desde .env
 
-const MarketPage = ({ isGestor }) => {
+const MarketPage = (/* { isGestor } */) => {
   const [search, setSearch] = useState("");
   const [sortByPrice, setSortByPrice] = useState("asc");
   const [filterCategory, setFilterCategory] = useState(""); // Estado para categoría seleccionada

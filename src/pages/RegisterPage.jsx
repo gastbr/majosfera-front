@@ -22,16 +22,19 @@ const RegisterPage = () => {
     e.preventDefault();
     // Aquí se puede agregar la lógica de registro
 
+    
     if (userData.password !== userData.confirmPassword) {
       alert("Las contraseñas no coinciden");
       return;
     }
-
+    
     if (userData.password.length < 8) {
       alert("La contraseña debe tener al menos 8 caracteres");
       return;
     }
-
+    
+    console.log(userData);
+    
     register(userData.nombre + userData.apellidos, userData.email, userData.password)
       .then(() => {
         alert("Registro exitoso");
