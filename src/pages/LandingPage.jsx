@@ -2,8 +2,6 @@ import { Link } from "react-router";
 
 const LandingPage = () => {
 
-  const backURL = import.meta.env.VITE_API_URL;
-
   return (
     <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
       {/* Header */}
@@ -94,13 +92,13 @@ const LandingPage = () => {
         {/* Sección de Login y Registro */}
         <div className="flex space-x-4 mt-6">
           <Link
-            to={`${backURL}/login`}
+            to="/login"
             className="bg-amber-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-amber-700 transition"
           >
             Login
           </Link>
           <Link
-            to={`${backURL}/register`}
+            to="/register"
             className="bg-amber-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-amber-700 transition"
           >
             Registro

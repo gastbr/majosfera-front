@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { Link } from "react-router";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { register } from "../services/auth";
 
 const RegisterPage = () => {
   const [userData, setUserData] = useState({
@@ -15,10 +16,31 @@ const RegisterPage = () => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = (e) => {
     e.preventDefault();
     // Aquí se puede agregar la lógica de registro
-    alert("Registro exitoso");
+
+    if (userData.password !== userData.confirmPassword) {
+      alert("Las contraseñas no coinciden");
+      return;
+    }
+
+    if (userData.password.length < 8) {
+      alert("La contraseña debe tener al menos 8 caracteres");
+      return;
+    }
+
+    register(userData.nombre + userData.apellidos, userData.email, userData.password)
+      .then(() => {
+        alert("Registro exitoso");
+        navigate("/login");
+      })
+      .catch((error) => {
+        alert("Error en el registro: " + error.message);
+        console.error(error);
+      });
   };
 
   return (
