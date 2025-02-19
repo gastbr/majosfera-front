@@ -33,7 +33,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/association" element={<AssociationPage />} />
+        <Route path="/association/:id" element={<AssociationPage />} />
         <Route path="/market" element={<MarketPage />} />
         <Route path="/associations-list" element={<AssociationListPage />} />
         <Route path="/register" element={<RegisterPage />} />
