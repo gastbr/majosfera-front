@@ -1,23 +1,30 @@
-import axios from './axios';
+import api from './axios';
 
 export const login = (email, password) => {
-    return axios.post('/login', { email, password })
+    return api.post('/login', { email, password })
         .then(response => {
-            const token = response.data.token;
-            sessionStorage.setItem('token', token);
             return response.data;
         });
 };
 
 export const logout = () => {
+    // hacer logout a traves de la API
     sessionStorage.removeItem('token');
 };
 
-export const register = (email, password) => {
-    return axios.post('/register', { email, password })
+export const register = (name, email, password) => {
+    return api.get(`/sanctum/csrf-cookie`)
+        .then(() => {
+            try {
+                return api.post(`/register`, { name, email, password }, {
+                    withCredentials: true,
+                    withXSRFToken: true,
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        })
         .then(response => {
-            const token = response.data.token;
-            sessionStorage.setItem('token', token);
-            return response.data;
+            console.log(response);
         });
-}
+};

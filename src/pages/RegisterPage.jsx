@@ -4,11 +4,11 @@ import { register } from "../services/auth";
 
 const RegisterPage = () => {
   const [userData, setUserData] = useState({
-    nombre: "",
-    apellidos: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    nombre: "123",
+    apellidos: "123",
+    email: "123@123.com",
+    password: "123123123",
+    confirmPassword: "123123123",
     foto: "",
   });
 
@@ -20,21 +20,16 @@ const RegisterPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aquí se puede agregar la lógica de registro
-
-    
     if (userData.password !== userData.confirmPassword) {
       alert("Las contraseñas no coinciden");
       return;
     }
-    
+
     if (userData.password.length < 8) {
       alert("La contraseña debe tener al menos 8 caracteres");
       return;
     }
-    
-    console.log(userData);
-    
+
     register(userData.nombre + userData.apellidos, userData.email, userData.password)
       .then(() => {
         alert("Registro exitoso");
