@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router";
+import Footer from "../components/Footer";
 
 const API_URL = import.meta.env.VITE_API_URL; // URL del backend desde .env
 
@@ -109,11 +110,10 @@ const ProductPage = () => {
         <div className="flex space-x-4 mt-4">
           <button
             onClick={() => toggleFavourite(product)}
-            className={`px-4 py-2 rounded-lg text-lg transition ${
-              favourites.some((fav) => fav.id === product.id)
+            className={`px-4 py-2 rounded-lg text-lg transition ${favourites.some((fav) => fav.id === product.id)
                 ? "bg-red-600 hover:bg-red-700 text-white"
                 : "bg-gray-300 hover:bg-gray-400 text-black"
-            }`}
+              }`}
           >
             {favourites.some((fav) => fav.id === product.id)
               ? "Quitar de Favoritos"
@@ -131,10 +131,7 @@ const ProductPage = () => {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-amber-600 text-white py-3 text-center text-sm">
-        &copy; {new Date().getFullYear()} Todos los derechos reservados.
-      </footer>
+      <Footer />
     </div>
   );
 };

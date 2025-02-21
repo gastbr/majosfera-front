@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { register } from "../services/auth";
+import Footer from "../components/Footer";
 
 const RegisterPage = () => {
   const [userData, setUserData] = useState({
@@ -31,13 +32,18 @@ const RegisterPage = () => {
     }
 
     register(userData.nombre + userData.apellidos, userData.email, userData.password)
-      .then(() => {
-        alert("Registro exitoso");
-        navigate("/login");
+      .then((response) => {
+        if (response.status === 200) {
+          alert("Registro exitoso");
+          navigate("/login");
+        } else {
+          alert("Error en el registro");
+        }
       })
       .catch((error) => {
         alert("Error en el registro: " + error.message);
         console.error(error);
+        console.log(error.message);
       });
   };
 
@@ -130,10 +136,7 @@ const RegisterPage = () => {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-amber-600 text-white py-3 text-center text-sm">
-        &copy; {new Date().getFullYear()} Todos los derechos reservados.
-      </footer>
+      <Footer />
     </div>
   );
 };

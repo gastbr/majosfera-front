@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
+import Footer from "../components/Footer";
 
 const FavouritePage = () => {
   const [favourites, setFavourites] = useState([
@@ -78,10 +79,7 @@ const FavouritePage = () => {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-amber-600 text-white py-3 text-center text-sm">
-        &copy; {new Date().getFullYear()} Todos los derechos reservados.
-      </footer>
+      <Footer />
     </div>
   );
 };

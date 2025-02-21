@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router";
+import Footer from "../components/Footer";
 
 const API_URL = import.meta.env.VITE_API_URL; // URL del backend desde .env
 
@@ -130,10 +131,7 @@ const AssociationPage = () => {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="bg-amber-600 text-white py-3 text-center text-sm">
-        &copy; {new Date().getFullYear()} Todos los derechos reservados.
-      </footer>
+      <Footer />
     </div>
   );
 };

@@ -1,8 +1,25 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
+import Footer from "../components/Footer";
+import { logout, user } from "../services/auth";
 
 const ProfilePage = () => {
   const [role, setRole] = useState("user"); // Puede ser "user", "admin" o "gestor"
+  const [logoutMessage, setLogoutMessage] = useState(""); // State for logout message
+
+  user().then((data) => {
+    console.log("==> user data:", data);
+  });
+
+  const handleLogout = () => {
+    logout()
+      .then(() => {
+        setLogoutMessage("Sesión cerrada con éxito"); // Set the logout message on success
+      })
+      .catch((error) => {
+        console.error("Logout failed:", error); // Handle the error case
+      });
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
@@ -25,6 +42,12 @@ const ProfilePage = () => {
           >
             Inicio
           </Link>
+          <button
+            onClick={handleLogout}
+            className="bg-red-600 text-white px-4 py-2 rounded-lg text-lg hover:bg-red-700 transition"
+          >
+            Logout
+          </button>
         </div>
       </header>
 
@@ -48,6 +71,13 @@ const ProfilePage = () => {
             Modificar perfil
           </Link>
         </div>
+
+        {/* Logout Message */}
+        {logoutMessage && (
+          <div className="bg-green-100 text-green-800 p-4 rounded-lg mt-4">
+            {logoutMessage}
+          </div>
+        )}
 
         {/* Opciones según el rol */}
         {role === "admin" && (
@@ -86,10 +116,7 @@ const ProfilePage = () => {
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="bg-amber-600 text-white py-3 text-center text-sm">
-        &copy; {new Date().getFullYear()} Todos los derechos reservados.
-      </footer>
+      <Footer />
     </div>
   );
 };

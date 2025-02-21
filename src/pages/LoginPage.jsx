@@ -1,6 +1,26 @@
-import { Link } from "react-router";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { login } from '../services/auth';
+import Footer from "../components/Footer";
 
 const LoginPage = () => {
+  const [userData, setUserData] = useState({
+    email: "user@test.com",
+    password: "123",
+  });
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    login(userData.email, userData.password)
+      .then(() => {
+        navigate("/profile");
+      })
+      .catch((error) => {
+        console.error("Login failed", error);
+      });
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
       {/* Header */}
@@ -22,12 +42,14 @@ const LoginPage = () => {
         </p>
 
         {/* Formulario de Login */}
-        <form className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+        <form className="bg-white p-6 rounded-lg shadow-md w-full max-w-md" onSubmit={handleSubmit}>
           <label className="block text-sm font-bold mb-2">Email</label>
           <input
             type="email"
             className="w-full p-2 border rounded-lg mb-4"
             placeholder="Tu email"
+            value={userData.email}
+            onChange={(e) => setUserData({ ...userData, email: e.target.value })}
             required
           />
 
@@ -36,6 +58,8 @@ const LoginPage = () => {
             type="password"
             className="w-full p-2 border rounded-lg mb-4"
             placeholder="Tu contraseña"
+            value={userData.password}
+            onChange={(e) => setUserData({ ...userData, password: e.target.value })}
             required
           />
 
@@ -56,10 +80,7 @@ const LoginPage = () => {
         </form>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-amber-600 text-white py-3 text-center text-sm">
-        &copy; {new Date().getFullYear()} Todos los derechos reservados.
-      </footer>
+      <Footer />
     </div>
   );
 };

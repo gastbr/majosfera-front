@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
 
+
 const API_URL = import.meta.env.VITE_API_URL; // URL del backend desde .env
 
 const MarketPage = (/* { isGestor } */) => {
