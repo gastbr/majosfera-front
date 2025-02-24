@@ -20,9 +20,7 @@ export const login = (email, password) => {
     return api.post('/login', { email, password },
         {
             withCredentials: true,
-            headers: {
-                'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'),
-            }
+            withXSRFToken: true,
         }).then(response => {
             console.log('==> login successful:', response);
         }).catch(error => {
@@ -43,9 +41,7 @@ export const register = (name, email, password) => {
     return api.post('/register', { name, email, password },
         {
             withCredentials: true,
-            headers: {
-                'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
-            }
+            withXSRFToken: true,
         })
         .then(response => {
             console.log('==> register successful:', response);
