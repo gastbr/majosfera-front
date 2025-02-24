@@ -1,4 +1,10 @@
-import api, { requestCookie } from './axios';
+import api from './axios';
+
+export const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
 
 export const user = () => {
     return api.get('/api/user', { withCredentials: true })
@@ -11,9 +17,12 @@ export const user = () => {
 }
 
 export const login = (email, password) => {
-    return requestCookie()
-        .then(() => {
-            return api.post('/login', { email, password }, { withCredentials: true });
+    return api.post('/login', { email, password },
+        {
+            withCredentials: true,
+            headers: {
+                'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'),
+            }
         }).then(response => {
             console.log('==> login successful:', response);
         }).catch(error => {
@@ -31,13 +40,18 @@ export const logout = () => {
 };
 
 export const register = (name, email, password) => {
-    requestCookie().then(() => {
-        api.post('/register', { name, email, password }, { withCredentials: true, withXSRFToken: true });
-    }).then(response => {
-        console.log('==> register successful:', response);
-        return response.data;
-    }).catch(error => {
-        console.error('==> register(auth) error:', error);
-        return error;
-    });
+    return api.post('/register', { name, email, password },
+        {
+            withCredentials: true,
+            headers: {
+                'X-XSRF-TOKEN': getCookie('XSRF-TOKEN')
+            }
+        })
+        .then(response => {
+            console.log('==> register successful:', response);
+            return response.data;
+        }).catch(error => {
+            console.error('==> register error:', error);
+            return error;
+        });
 };

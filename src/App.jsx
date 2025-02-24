@@ -17,8 +17,18 @@ import OrderPage from "./pages/OrderPage";
 import PaymentPage from "./pages/PaymentPage";
 import AssociationCRUDPage from "./pages/AssociationCRUDPage";
 import ProfileCRUDPage from "./pages/ProfileCRUDPage";
+import { requestCookie } from './axios';
+import { useEffect } from "react";
 
-function App() {
+const App = () => {
+  useEffect(() => {
+    requestCookie().then(() => {
+      console.log('CSRF cookie requested successfully');
+    }).catch((error) => {
+      console.error('Error requesting CSRF cookie:', error);
+    });
+  }, []);
+
   return (
     <Router>
       <Routes>
