@@ -1,7 +1,7 @@
 {
     "headers": [
         {
-            "source": "*",
+            "source": "/(api/:path*|sanctum/csrf-cookie|login|logout|register|email/verification-notification|forgot-password|reset-password|up|verify-email)",
             "headers": [
                 {
                     "key": "Access-Control-Allow-Credentials",
