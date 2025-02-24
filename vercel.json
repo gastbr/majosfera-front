@@ -1,4 +1,14 @@
 {
+    "rewrites": [
+        {
+            "source": "/api/:path*",
+            "destination": "https://backend.example.com/api/:path*"
+        },
+        {
+            "source": "/(sanctum/csrf-cookie|login|logout|register|email/verification-notification|forgot-password|reset-password|up|verify-email)",
+            "destination": "https://backend.example.com/$1"
+        }
+    ],
     "headers": [
         {
             "source": "/(api/:path*|sanctum/csrf-cookie|login|logout|register|email/verification-notification|forgot-password|reset-password|up|verify-email)",
