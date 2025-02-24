@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router";
+//import { Link } from "react-router";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -33,7 +33,7 @@ const ContactPage = () => {
         throw new Error(errorData.message || "Error al enviar el mensaje");
       }
 
-      const data = await response.json();
+      // const data = await response.json();
       setStatus({ success: true, message: "Mensaje enviado correctamente" });
       // Limpiar el formulario
       setName("");
