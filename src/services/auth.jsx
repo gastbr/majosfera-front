@@ -7,7 +7,7 @@ export const getCookie = (name) => {
 }
 
 export const user = () => {
-    return api.get('/api/user', { withCredentials: true })
+    return api.get('/api/user', { withCredentials: true, withXSRFToken: true })
         .then(response => {
             console.log('==> user:', response);
             return response.data;
