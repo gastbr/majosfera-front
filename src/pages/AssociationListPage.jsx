@@ -1,40 +1,94 @@
-import { useState } from "react";
-import { Link } from "react-router";
+import { useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router";
+import Header from "../components/Header";
 import Footer from "../components/Footer";
 
+const API_URL = import.meta.env.VITE_API_URL; // URL del backend desde .env
+
 const AssociationListPage = () => {
-  const [associations] = useState([
-    {
-      id: 1,
-      name: "Asociación A",
-      descripcion: "Descripción de la Asociación A",
-    },
-    {
-      id: 2,
-      name: "Asociación B",
-      descripcion: "Descripción de la Asociación B",
-    },
-    {
-      id: 3,
-      name: "Asociación C",
-      descripcion: "Descripción de la Asociación C",
-    },
-  ]);
+  // useSearchParams para la búsqueda
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialSearch = searchParams.get("search") || "";
+  const [search, setSearch] = useState(initialSearch);
+
+  // Estado para ordenar alfabéticamente
+  const [sortDirection, setSortDirection] = useState("asc");
+
+  // Estados para almacenar asociaciones, loading y error
+  const [associations, setAssociations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Llamada a la API para obtener asociaciones
+  useEffect(() => {
+    const fetchAssociations = async () => {
+      try {
+        const response = await fetch(`${API_URL}/api/associations`);
+        if (!response.ok) {
+          throw new Error("Error al obtener asociaciones");
+        }
+        const data = await response.json();
+        setAssociations(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAssociations();
+  }, []);
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearch(value);
+    setSearchParams({ search: value });
+  };
+
+  const toggleSort = () => {
+    setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+  };
+
+  // Filtrar asociaciones según el término de búsqueda
+  const filteredAssociations = associations.filter((assoc) =>
+    assoc.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  // Ordenar las asociaciones alfabéticamente
+  const sortedAssociations = filteredAssociations.sort((a, b) => {
+    return sortDirection === "asc"
+      ? a.name.localeCompare(b.name)
+      : b.name.localeCompare(a.name);
+  });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
+        <Header />
+        <main className="flex-1 flex items-center justify-center">
+          <p className="text-xl text-amber-600">Cargando asociaciones...</p>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
+        <Header />
+        <main className="flex-1 flex items-center justify-center">
+          <p className="text-xl text-red-600">Error: {error}</p>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
-      {/* Header */}
-      <header className="bg-amber-600 text-white py-4 px-6 flex justify-between items-center shadow-md">
-        <h1 className="text-2xl font-bold">Lista de Asociaciones</h1>
-        <Link
-          to="/"
-          className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
-        >
-          Inicio
-        </Link>
-      </header>
-
-      {/* Main Content */}
+    <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900 overflow-x-hidden">
+      <Header />
+      {/* Contenido principal */}
       <main className="flex-1 flex flex-col items-center p-6">
         <h1 className="text-4xl font-extrabold mb-4">Explora Asociaciones</h1>
         <p className="text-lg text-amber-800 mb-6 max-w-lg text-center">
@@ -42,20 +96,52 @@ const AssociationListPage = () => {
           más detalles.
         </p>
 
+        {/* Barra de búsqueda */}
+        <div className="relative p-4 w-full max-w-4xl mx-auto">
+          <input
+            type="text"
+            className="w-full p-2 pr-10 h-10 border rounded-lg"
+            placeholder="Buscar asociación..."
+            value={search}
+            onChange={handleSearchChange}
+          />
+          {search && (
+            <button
+              onClick={() => {
+                setSearch("");
+                setSearchParams({ search: "" });
+              }}
+              className="absolute right-7 top-1/2 transform -translate-y-1/2 text-gray-700 hover:text-gray-900"
+            >
+              ✕
+            </button>
+          )}
+        </div>
+
+        {/* Botón de ordenación alfabética */}
+        <div className="w-full max-w-4xl mx-auto p-4 flex justify-end">
+          <button
+            onClick={toggleSort}
+            className="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition text-sm"
+          >
+            Ordenar Alfabéticamente {sortDirection === "asc" ? "A-Z" : "Z-A"}
+          </button>
+        </div>
+
+        {/* Listado de asociaciones */}
         <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {associations.map((association) => (
+          {sortedAssociations.map((association) => (
             <div
               key={association.id}
               className="bg-white p-6 rounded-lg shadow-md text-center"
             >
               <h2 className="text-2xl font-bold mb-2">{association.name}</h2>
               <p className="text-lg text-amber-800 mb-4">
-                {association.descripcion}
+                {association.descripcion || "Sin descripción"}
               </p>
               <Link
-                to={`/association/`}
-                // to={`/association/${association.id}`}
-                className="bg-amber-600 text-white px-6 py-2 rounded-lg text-lg hover:bg-green-700 transition"
+                to={`/association/${association.id}`}
+                className="bg-amber-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
               >
                 Ver Asociación
               </Link>
@@ -63,7 +149,6 @@ const AssociationListPage = () => {
           ))}
         </div>
       </main>
-
       <Footer />
     </div>
   );

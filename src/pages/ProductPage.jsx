@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router";
+import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 const API_URL = import.meta.env.VITE_API_URL; // URL del backend desde .env
@@ -54,37 +55,8 @@ const ProductPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
-      {/* Header */}
-      <header className="bg-amber-600 text-white py-4 px-6 flex justify-between items-center shadow-md">
-        <h1 className="text-2xl font-bold">Detalles del Producto</h1>
-        <div className="flex space-x-4">
-          <Link
-            to="/"
-            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
-          >
-            Inicio
-          </Link>
-          <Link
-            to="/market"
-            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
-          >
-            Tienda
-          </Link>
-          <Link
-            to="/favourite"
-            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
-          >
-            Favoritos
-          </Link>
-          <Link
-            to="/order"
-            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
-          >
-            Pedido
-          </Link>
-        </div>
-      </header>
+    <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900 overflow-x-hidden">
+      <Header />
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center p-6 text-center">
@@ -94,9 +66,6 @@ const ProductPage = () => {
           className="w-64 h-auto rounded-lg mb-4"
         />
         <h1 className="text-4xl font-extrabold mb-2">{product.name}</h1>
-        {/* <p className="text-lg text-amber-800 mb-2">
-          <strong>Categoría:</strong> {product.category?.name || "Desconocida"}
-        </p> */}
         <p className="text-lg text-amber-800 mb-2">
           <strong>Precio:</strong> {product.price}€
         </p>
@@ -110,10 +79,11 @@ const ProductPage = () => {
         <div className="flex space-x-4 mt-4">
           <button
             onClick={() => toggleFavourite(product)}
-            className={`px-4 py-2 rounded-lg text-lg transition ${favourites.some((fav) => fav.id === product.id)
+            className={`px-4 py-2 rounded-lg text-lg transition ${
+              favourites.some((fav) => fav.id === product.id)
                 ? "bg-red-600 hover:bg-red-700 text-white"
                 : "bg-gray-300 hover:bg-gray-400 text-black"
-              }`}
+            }`}
           >
             {favourites.some((fav) => fav.id === product.id)
               ? "Quitar de Favoritos"
