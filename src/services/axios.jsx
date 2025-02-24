@@ -4,9 +4,11 @@ axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 
 const api = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}`,
+  baseURL: '/',
   withCredentials: true,
   withXSRFToken: true,
+  xsrfCookieName: 'XSRF-TOKEN', // Nombre de la cookie donde Laravel almacena el token CSRF
+  xsrfHeaderName: 'X-XSRF-TOKEN' // Nombre del header donde se enviará el token
 });
 
 export const requestCookie = () => {

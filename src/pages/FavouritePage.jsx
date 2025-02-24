@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router";
+// import { Link } from "react-router";
+import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 const FavouritePage = () => {
@@ -23,18 +24,8 @@ const FavouritePage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
-      {/* Header */}
-      <header className="bg-amber-600 text-white py-4 px-6 flex justify-between items-center shadow-md">
-        <h1 className="text-2xl font-bold">Productos Favoritos</h1>
-        <Link
-          to="/"
-          className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
-        >
-          Inicio
-        </Link>
-      </header>
-
+    <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900 overflow-x-hidden">
+      <Header />
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center p-6 text-center">
         <h1 className="text-4xl font-extrabold mb-4">
@@ -45,19 +36,26 @@ const FavouritePage = () => {
           Puedes eliminarlos o añadirlos al carrito.
         </p>
 
-        {/* Favourite Products List */}
-        <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Listado de Productos Favoritos */}
+        <div className="w-full max-w-4xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {favourites.map((product) => (
             <div
               key={product.id}
               className="relative bg-white p-6 rounded-lg shadow-md text-center"
             >
-              {/* Favorite Icon */}
+              {/* Botón de eliminar favorito */}
               <button
                 onClick={() => removeFavourite(product.id)}
-                className="absolute top-3 right-3 text-2xl"
+                className="absolute top-2 right-2 flex items-center justify-center p-1 rounded-full bg-white hover:bg-gray-100 transition"
               >
-                <span className="text-red-600">❤️</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-red-600"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                </svg>
               </button>
 
               <img
@@ -78,7 +76,6 @@ const FavouritePage = () => {
           ))}
         </div>
       </main>
-
       <Footer />
     </div>
   );

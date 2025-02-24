@@ -1,11 +1,5 @@
 import api from './axios';
 
-export const getCookie = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-}
-
 export const user = () => {
     return api.get('/api/user', { withCredentials: true, withXSRFToken: true })
         .then(response => {
@@ -29,7 +23,7 @@ export const login = (email, password) => {
 };
 
 export const logout = () => {
-    return api.post('/logout', {}, { withCredentials: true })
+    return api.post('/logout', {}, { withCredentials: true, withXSRFToken: true })
         .then(response => {
             console.log('==> logout successful:', response);
         }).catch(error => {

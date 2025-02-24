@@ -18,7 +18,6 @@ import PaymentPage from "./pages/PaymentPage";
 import AssociationCRUDPage from "./pages/AssociationCRUDPage";
 import ProfileCRUDPage from "./pages/ProfileCRUDPage";
 import { requestCookie } from "./services/axios";
-
 import { useEffect } from "react";
 
 const App = () => {
