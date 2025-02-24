@@ -7,9 +7,7 @@ const Header = () => {
   return (
     <header className="bg-amber-600 text-white py-4 px-4 md:px-8 shadow-md">
       <div className="flex justify-between items-center">
-        <h1 className="text-xl md:text-2xl font-bold">
-          Marketplace de Asociaciones
-        </h1>
+        <h1 className="text-xl md:text-2xl font-bold">LOGO Y NOMBRE APP</h1>
         {/* Botón de menú para pantallas menores a lg */}
         <button
           className="lg:hidden focus:outline-none"
