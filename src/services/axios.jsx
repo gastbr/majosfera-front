@@ -1,28 +1,16 @@
-import axios from 'axios';
-
-// Función para obtener la cookie XSRF-TOKEN
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(";").shift();
-}
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: `${import.meta.env.VITE_API_URL}`,
-  withCredentials: true,
-  headers: {
-    'X-XSRF-TOKEN': getCookie('XSRF-TOKEN'), // 🔹 Enviar el token en cada solicitud
-  }
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
-export const requestCookie = () => {
-  return api.get('/sanctum/csrf-cookie', { withCredentials: true })
-    .then(response => {
-      console.log('CSRF cookie set', response);
-    })
-    .catch(error => {
-      console.error('Error setting CSRF cookie:', error);
-    });
-}
+// Interceptor para inyectar el token en todas las solicitudes
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export default api;
