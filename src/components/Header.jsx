@@ -7,7 +7,21 @@ const Header = () => {
   return (
     <header className="bg-amber-600 text-white py-4 px-4 md:px-8 shadow-md">
       <div className="flex justify-between items-center">
-        <h1 className="text-xl md:text-2xl font-bold">LOGO Y NOMBRE APP</h1>
+        {/* Logo y texto envuelto en un Link para redirigir al landing */}
+        <Link to="/" className="flex items-center space-x-3">
+          <img
+            src="/logo-notext.png"
+            alt="Logo Majosfera"
+            className="w-10 md:w-12 lg:w-16 h-auto"
+          />
+          <div className="flex flex-col leading-tight">
+            <span className="font-miriamLibre text-xl md:text-2xl font-bold">
+              Majosfera
+            </span>
+            <span className="font-cookie text-base md:text-lg">market</span>
+          </div>
+        </Link>
+
         {/* Botón de menú para pantallas menores a lg */}
         <button
           className="lg:hidden focus:outline-none"
@@ -27,6 +41,7 @@ const Header = () => {
             />
           </svg>
         </button>
+
         {/* Menú horizontal para pantallas lg en adelante */}
         <nav className="hidden lg:flex space-x-4">
           <Link
@@ -53,7 +68,7 @@ const Header = () => {
           >
             Contacto
           </Link>
-          {/* <Link
+          <Link
             to="/favourite"
             className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
           >
@@ -70,58 +85,59 @@ const Header = () => {
             className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
           >
             Perfil
-          </Link> */}
+          </Link>
         </nav>
       </div>
+
       {/* Menú móvil */}
       {menuOpen && (
         <nav className="lg:hidden mt-4 flex flex-col space-y-2">
           <Link
             to="/"
-            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
             onClick={() => setMenuOpen(false)}
+            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
           >
             Eventos
           </Link>
           <Link
             to="/market"
-            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
             onClick={() => setMenuOpen(false)}
+            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
           >
             Tienda
           </Link>
           <Link
             to="/associations-list"
-            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
             onClick={() => setMenuOpen(false)}
+            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
           >
             Asociaciones
           </Link>
           <Link
             to="/contact"
-            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
             onClick={() => setMenuOpen(false)}
+            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
           >
             Contacto
           </Link>
           <Link
             to="/favourite"
-            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
             onClick={() => setMenuOpen(false)}
+            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
           >
             Favoritos
           </Link>
           <Link
             to="/order"
-            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
             onClick={() => setMenuOpen(false)}
+            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
           >
             Pedido
           </Link>
           <Link
             to="/profile"
-            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
             onClick={() => setMenuOpen(false)}
+            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
           >
             Perfil
           </Link>

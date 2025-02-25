@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const API_URL = import.meta.env.VITE_API_URL; // URL del backend desde .env
+const API_URL = import.meta.env.VITE_API_URL;
 
 const AssociationListPage = () => {
   // useSearchParams para la búsqueda
@@ -18,6 +18,10 @@ const AssociationListPage = () => {
   const [associations, setAssociations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Estado para paginación
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 15;
 
   // Llamada a la API para obtener asociaciones
   useEffect(() => {
@@ -43,10 +47,14 @@ const AssociationListPage = () => {
     const value = e.target.value;
     setSearch(value);
     setSearchParams({ search: value });
+    // Reinicia la paginación al cambiar la búsqueda
+    setCurrentPage(1);
   };
 
   const toggleSort = () => {
     setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
+    // Reinicia la paginación si se cambia el orden
+    setCurrentPage(1);
   };
 
   // Filtrar asociaciones según el término de búsqueda
@@ -60,6 +68,13 @@ const AssociationListPage = () => {
       ? a.name.localeCompare(b.name)
       : b.name.localeCompare(a.name);
   });
+
+  // Cálculo de la paginación
+  const totalPages = Math.ceil(sortedAssociations.length / itemsPerPage);
+  const displayedAssociations = sortedAssociations.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   if (loading) {
     return (
@@ -88,7 +103,6 @@ const AssociationListPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900 overflow-x-hidden">
       <Header />
-      {/* Contenido principal */}
       <main className="flex-1 flex flex-col items-center p-6">
         <h1 className="text-4xl font-extrabold mb-4">Explora Asociaciones</h1>
         <p className="text-lg text-amber-800 mb-6 max-w-lg text-center">
@@ -110,6 +124,7 @@ const AssociationListPage = () => {
               onClick={() => {
                 setSearch("");
                 setSearchParams({ search: "" });
+                setCurrentPage(1);
               }}
               className="absolute right-7 top-1/2 transform -translate-y-1/2 text-gray-700 hover:text-gray-900"
             >
@@ -130,7 +145,7 @@ const AssociationListPage = () => {
 
         {/* Listado de asociaciones */}
         <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {sortedAssociations.map((association) => (
+          {displayedAssociations.map((association) => (
             <div
               key={association.id}
               className="bg-white p-6 rounded-lg shadow-md text-center"
@@ -148,6 +163,31 @@ const AssociationListPage = () => {
             </div>
           ))}
         </div>
+
+        {/* Controles de paginación */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center mt-6 space-x-4">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg disabled:opacity-50"
+            >
+              Anterior
+            </button>
+            <span className="text-lg">
+              Página {currentPage} de {totalPages}
+            </span>
+            <button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={currentPage === totalPages}
+              className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg disabled:opacity-50"
+            >
+              Siguiente
+            </button>
+          </div>
+        )}
       </main>
       <Footer />
     </div>
