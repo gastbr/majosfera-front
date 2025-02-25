@@ -17,20 +17,20 @@ import OrderPage from "./pages/OrderPage";
 import PaymentPage from "./pages/PaymentPage";
 import AssociationCRUDPage from "./pages/AssociationCRUDPage";
 import ProfileCRUDPage from "./pages/ProfileCRUDPage";
-import { requestCookie } from "./services/axios";
+// import { requestCookie } from "./services/axios";
 
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 const App = () => {
-  useEffect(() => {
-    requestCookie()
-      .then(() => {
-        console.log("CSRF cookie requested successfully");
-      })
-      .catch((error) => {
-        console.error("Error requesting CSRF cookie:", error);
-      });
-  }, []);
+  // useEffect(() => {
+  //   requestCookie()
+  //     .then(() => {
+  //       console.log("CSRF cookie requested successfully");
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error requesting CSRF cookie:", error);
+  //     });
+  // }, []);
 
   return (
     <Router>
