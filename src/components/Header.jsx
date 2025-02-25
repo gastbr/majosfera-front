@@ -53,7 +53,7 @@ const Header = () => {
           >
             Contacto
           </Link>
-          <Link
+          {/* <Link
             to="/favourite"
             className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
           >
@@ -70,7 +70,7 @@ const Header = () => {
             className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
           >
             Perfil
-          </Link>
+          </Link> */}
         </nav>
       </div>
       {/* Menú móvil */}

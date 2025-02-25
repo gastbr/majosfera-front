@@ -1,25 +1,17 @@
-import axios from 'axios';
-
-axios.defaults.withCredentials = true;
-axios.defaults.withXSRFToken = true;
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: '/',
-  withCredentials: true,
-  withXSRFToken: true,
-  xsrfCookieName: 'XSRF-TOKEN', // Nombre de la cookie donde Laravel almacena el token CSRF
-  xsrfHeaderName: 'X-XSRF-TOKEN' // Nombre del header donde se enviará el token
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
-export const requestCookie = () => {
-  return api.get('/sanctum/csrf-cookie', { withCredentials: true, withXSRFToken: true })
-    .then(response => {
-      console.log('CSRF cookie set', response);
-    })
-    .catch(error => {
-      console.error('Error setting CSRF cookie:', error);
-    });
-}
+// Interceptor para inyectar el token en todas las solicitudes
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export default api;
 

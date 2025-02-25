@@ -1,47 +1,92 @@
-import { useState } from "react";
-import { Link } from "react-router";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
+import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { logout, user } from "../services/auth";
+import { user, logout, updateUser } from "../services/auth";
 
 const ProfilePage = () => {
-  const [role, setRole] = useState("user"); // Puede ser "user", "admin" o "gestor"
-  const [logoutMessage, setLogoutMessage] = useState(""); // State for logout message
-
-  user().then((data) => {
-    console.log("==> user data:", data);
+  const [profile, setProfile] = useState(null);
+  const [editing, setEditing] = useState(false);
+  const [message, setMessage] = useState("");
+  const [formData, setFormData] = useState({
+    userName: "",
+    password: "",
+    confirmPassword: "",
   });
+  const navigate = useNavigate();
+
+  // Cargar los datos del usuario autenticado
+  useEffect(() => {
+    user().then((data) => {
+      if (data) {
+        setProfile(data);
+        setFormData({
+          userName: data.userName || "",
+          password: "",
+          confirmPassword: "",
+        });
+      }
+    });
+  }, []);
 
   const handleLogout = () => {
     logout()
       .then(() => {
-        setLogoutMessage("Sesión cerrada con éxito"); // Set the logout message on success
+        navigate("/"); // Redirige al landing (inicio) tras el logout
       })
       .catch((error) => {
-        console.error("Logout failed:", error); // Handle the error case
+        console.error("Logout failed:", error);
       });
   };
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    setMessage("");
+
+    if (formData.password && formData.password !== formData.confirmPassword) {
+      setMessage("Las contraseñas no coinciden.");
+      return;
+    }
+
+    // Construir el payload a enviar:
+    // Incluimos el nuevo userName y, si se desea cambiar la contraseña, se la enviamos
+    const payload = {
+      userName: formData.userName,
+    };
+    if (formData.password) {
+      payload.password = formData.password;
+      payload.password_confirmation = formData.confirmPassword;
+    }
+
+    try {
+      const updatedUser = await updateUser(payload);
+      setProfile(updatedUser);
+      setEditing(false);
+      setMessage("Perfil actualizado con éxito.");
+    } catch (error) {
+      console.error("Error al actualizar perfil:", error);
+      setMessage(error.message || "Error al actualizar el perfil.");
+    }
+  };
+
+  if (!profile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-amber-100 text-amber-900">
+        <p>Cargando perfil...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
-      {/* Header */}
-      <header className="bg-amber-600 text-white py-4 px-6 flex justify-between items-center shadow-md">
-        <h1 className="text-2xl font-bold">Perfil de Usuario</h1>
+    <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900 overflow-x-hidden">
+      <Header />
+      <header className="bg-amber-600 text-white py-4 px-6 flex flex-col md:flex-row justify-between items-center shadow-md">
+        <h1 className="text-2xl font-bold mb-2 md:mb-0">Perfil de Usuario</h1>
         <div className="flex items-center space-x-4">
-          <select
-            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg cursor-pointer"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-          >
-            <option value="user">Usuario</option>
-            <option value="admin">Administrador</option>
-            <option value="gestor">Gestor</option>
-          </select>
-          <Link
-            to="/"
-            className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
-          >
-            Inicio
-          </Link>
           <button
             onClick={handleLogout}
             className="bg-red-600 text-white px-4 py-2 rounded-lg text-lg hover:bg-red-700 transition"
@@ -50,72 +95,92 @@ const ProfilePage = () => {
           </button>
         </div>
       </header>
-
-      {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-center p-6">
-        <h1 className="text-4xl font-extrabold mb-4">Bienvenido a tu perfil</h1>
-
-        {/* Información del usuario */}
-        <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md text-center">
-          <img
-            src="https://via.placeholder.com/150"
-            alt="Foto de perfil"
-            className="w-32 h-32 rounded-full mx-auto mb-4"
-          />
-          <h2 className="text-2xl font-bold">Nombre Apellido</h2>
-          <p className="text-lg text-amber-800">usuario@email.com</p>
-          <Link
-            to="/profile-update"
-            className="bg-amber-600 text-white px-3 py-1 rounded-lg text-lg hover:bg-amber-700 transition"
-          >
-            Modificar perfil
-          </Link>
+      <main className="flex-1 flex flex-col items-center p-6">
+        <h2 className="text-4xl font-extrabold mb-4 text-center">Mi Perfil</h2>
+        <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+          {editing ? (
+            <form onSubmit={handleUpdate}>
+              <div className="mb-4">
+                <label className="block text-sm font-bold mb-1">
+                  Nombre de Usuario
+                </label>
+                <input
+                  type="text"
+                  name="userName"
+                  className="w-full p-2 border rounded-lg"
+                  value={formData.userName}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-bold mb-1">
+                  Nueva Contraseña (opcional)
+                </label>
+                <input
+                  type="password"
+                  name="password"
+                  className="w-full p-2 border rounded-lg"
+                  placeholder="Dejar en blanco para no cambiar"
+                  value={formData.password}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-bold mb-1">
+                  Confirmar Contraseña
+                </label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  className="w-full p-2 border rounded-lg"
+                  placeholder="Confirmar contraseña"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="flex justify-end space-x-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditing(false);
+                    setMessage("");
+                  }}
+                  className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition"
+                >
+                  Guardar Cambios
+                </button>
+              </div>
+            </form>
+          ) : (
+            <div className="text-center">
+              <p className="text-lg text-amber-800 mb-2">
+                <span className="font-bold">Usuario: </span>
+                {profile.userName}
+              </p>
+              <p className="text-lg text-amber-800 mb-2">
+                <span className="font-bold">Email: </span>
+                {profile.email}
+              </p>
+              <button
+                onClick={() => setEditing(true)}
+                className="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition"
+              >
+                Editar Perfil
+              </button>
+            </div>
+          )}
+          {message && (
+            <div className="mt-4 text-center text-red-600">{message}</div>
+          )}
         </div>
-
-        {/* Logout Message */}
-        {logoutMessage && (
-          <div className="bg-green-100 text-green-800 p-4 rounded-lg mt-4">
-            {logoutMessage}
-          </div>
-        )}
-
-        {/* Opciones según el rol */}
-        {role === "admin" && (
-          <>
-            <h2 className="text-2xl font-bold mt-6">
-              Opciones de Administrador
-            </h2>
-            <div className="flex space-x-4 mb-6">
-              <Link
-                to="/association-register"
-                className="bg-amber-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-amber-700 transition"
-              >
-                Registrar Asociaciones
-              </Link>
-              <Link
-                to="/association-CRUD"
-                className="bg-amber-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-amber-700 transition"
-              >
-                Gestionar Asociaciones
-              </Link>
-            </div>
-          </>
-        )}
-        {role === "gestor" && (
-          <>
-            <h2 className="text-2xl font-bold mt-6">Opciones de Gestor</h2>
-            <div className="flex space-x-4 mb-6">
-              <Link
-                to="/association-profile"
-                className="bg-amber-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-amber-700 transition"
-              >
-                Perfil de Asociación
-              </Link>
-            </div>
-          </>
-        )}
       </main>
-
       <Footer />
     </div>
   );
