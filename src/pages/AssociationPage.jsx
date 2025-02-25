@@ -153,14 +153,14 @@ const AssociationPage = () => {
                 </p>
                 {/* Botón de Añadir al Carrito */}
                 <div className="flex justify-center space-x-4 mt-4">
-                  <button className="flex items-center justify-center p-2 rounded-lg bg-green-600 hover:bg-green-700 transition text-white">
+                  <button className="flex items-center justify-center p-2 rounded-lg bg-yellow-500 hover:bg-green-700 transition text-white">
                     Añadir al Carrito
                   </button>
                 </div>
                 {/* Enlace para ver detalle del producto */}
                 <Link
                   to={`/product/${product.id}`}
-                  className="inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                  className="inline-block mt-4 bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
                 >
                   Ver Producto
                 </Link>
