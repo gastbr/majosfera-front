@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import { login } from "../services/auth";
 
 const LoginPage = () => {
@@ -28,7 +26,6 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
-      <Header />
       <main className="flex-1 flex flex-col items-center justify-center p-6">
         <h1 className="text-4xl font-extrabold mb-4">Bienvenido</h1>
         <p className="text-lg text-amber-800 mb-6 max-w-lg text-center">
@@ -78,7 +75,6 @@ const LoginPage = () => {
           </div>
         </form>
       </main>
-      <Footer />
     </div>
   );
 };

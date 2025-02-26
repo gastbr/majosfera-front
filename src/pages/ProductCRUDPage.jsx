@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import Footer from "../components/Footer";
 
 const ProductCRUDPage = () => {
   const [search, setSearch] = useState("");
@@ -151,7 +150,6 @@ const ProductCRUDPage = () => {
         </Link>
       </div>
 
-      <Footer />
     </div>
   );
 };

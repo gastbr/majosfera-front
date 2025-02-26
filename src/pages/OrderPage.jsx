@@ -1,119 +1,122 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router";
-import Footer from "../components/Footer";
+
+
+import api from "../services/axios";
 
 const OrderPage = () => {
-  const [cart, setCart] = useState([
-    {
-      id: 1,
-      name: "Producto A",
-      price: 20,
-      quantity: 2,
-      image: "https://via.placeholder.com/150",
-    },
-    {
-      id: 2,
-      name: "Producto B",
-      price: 10,
-      quantity: 1,
-      image: "https://via.placeholder.com/150",
-    },
-  ]);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleQuantityChange = (id, delta) => {
-    setCart(
-      cart.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-          : item
-      )
+  // Cargar los pedidos del usuario
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await api.get("/api/orders");
+        console.log("Pedidos obtenidos:", response.data);
+        setOrders(response.data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchOrders();
+  }, []);
+
+  // Función para eliminar un producto del pedido
+  const handleRemoveProduct = async (orderId, productId) => {
+    try {
+      const response = await api.delete(
+        `/api/orders/${orderId}/products/${productId}`
+      );
+      console.log("Producto eliminado:", response.data);
+
+      // Actualizar el estado filtrando el producto eliminado
+      setOrders(
+        (prevOrders) =>
+          prevOrders
+            .map((order) =>
+              order.id === orderId
+                ? {
+                  ...order,
+                  products: order.products.filter(
+                    (product) => product.id !== productId
+                  ),
+                }
+                : order
+            )
+            .filter((order) => order.products.length > 0) // Filtra pedidos vacíos
+      );
+    } catch (error) {
+      console.error("Error al eliminar producto del pedido:", error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <p className="text-center text-lg text-amber-800">Cargando pedido...</p>
     );
-  };
+  }
 
-  const handleRemoveItem = (id) => {
-    setCart(cart.filter((item) => item.id !== id));
-  };
-
-  const totalAmount = cart.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
+  // Filtrar pedidos sin productos antes de renderizar
+  const filteredOrders = orders.filter(
+    (order) => order.products && order.products.length > 0
   );
 
   return (
     <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
-      {/* Header */}
-      <header className="bg-amber-600 text-white py-4 px-6 flex justify-between items-center shadow-md">
-        <h1 className="text-2xl font-bold">Resumen del Pedido</h1>
-        <Link
-          to="/"
-          className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
-        >
-          Inicio
-        </Link>
-      </header>
-
-      {/* Main Content */}
       <main className="flex-1 flex flex-col items-center p-6 text-center">
-        <h1 className="text-4xl font-extrabold mb-4">Tu Pedido</h1>
-        <p className="text-lg text-amber-800 mb-6 max-w-lg">
-          Aquí puedes ver los productos que vas a comprar, modificar cantidades
-          o eliminar artículos.
-        </p>
+        <h1 className="text-4xl font-extrabold mb-4">Tus Pedidos</h1>
 
-        {/* Cart Items */}
-        <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6">
-          {cart.map((item) => (
-            <div
-              key={item.id}
-              className="bg-white p-6 rounded-lg shadow-md text-center"
-            >
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-full h-auto rounded-lg mb-4"
-              />
-              <h2 className="text-2xl font-bold mb-2">{item.name}</h2>
-              <p className="text-lg text-amber-800 mb-2">
-                Precio: {item.price}€
-              </p>
-              <p className="text-lg text-amber-800 mb-2">
-                Cantidad: {item.quantity}
-              </p>
-              <div className="flex justify-center space-x-2">
-                <button
-                  onClick={() => handleQuantityChange(item.id, -1)}
-                  className="bg-gray-300 px-3 py-1 rounded-lg hover:bg-gray-400 transition"
-                >
-                  -
-                </button>
-                <button
-                  onClick={() => handleQuantityChange(item.id, 1)}
-                  className="bg-gray-300 px-3 py-1 rounded-lg hover:bg-gray-400 transition"
-                >
-                  +
-                </button>
+        {filteredOrders.length > 0 ? (
+          filteredOrders.map((order) => (
+            <div key={order.id} className="w-full max-w-4xl">
+              <h2 className="text-2xl font-bold my-4">Código #{order.id}</h2>
+
+              {/* Lista de productos del pedido */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {order.products.map((product) => (
+                  <div
+                    key={product.id}
+                    className="bg-white p-6 rounded-lg shadow-md text-center"
+                  >
+                    <img
+                      src={product.image_url}
+                      alt={product.name}
+                      className="w-24 h-24 mx-auto rounded-lg mb-4 object-cover"
+                    />
+                    <h2 className="text-xl font-bold mb-2">{product.name}</h2>
+                    <p className="text-lg text-amber-800 mb-2">
+                      Precio: {product.price}€
+                    </p>
+                    <p className="text-lg text-amber-800 mb-2">
+                      Cantidad: {product.pivot?.quantity || 1}
+                    </p>
+                    <button
+                      onClick={() => handleRemoveProduct(order.id, product.id)}
+                      className="mt-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                ))}
               </div>
-              <button
-                onClick={() => handleRemoveItem(item.id)}
-                className="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
-              >
-                Eliminar
-              </button>
             </div>
-          ))}
-        </div>
+          ))
+        ) : (
+          <p className="text-center text-lg text-amber-800">
+            No tienes productos en tu pedido.
+          </p>
+        )}
 
-        {/* Total Amount */}
-        <h2 className="text-2xl font-bold mt-6">Total: {totalAmount}€</h2>
         <Link
           to="/payment"
-          className="mt-4 bg-green-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-green-700 transition"
+          className="mt-6 bg-green-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-green-700 transition"
         >
           Confirmar Pedido
         </Link>
       </main>
-
-      <Footer />
     </div>
   );
 };
