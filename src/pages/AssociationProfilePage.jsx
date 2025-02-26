@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import Footer from "../components/Footer";
 
 const AssociationProfilePage = () => {
   const [associationData, setAssociationData] = useState({
@@ -130,7 +129,6 @@ const AssociationProfilePage = () => {
         </div>
       </main>
 
-      <Footer />
     </div>
   );
 };

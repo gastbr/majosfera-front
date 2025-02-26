@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import Footer from "../components/Footer";
 
 const RegisterProductPage = () => {
   const [productData, setProductData] = useState({
@@ -122,7 +121,6 @@ const RegisterProductPage = () => {
         </div>
       </main>
 
-      <Footer />
     </div>
   );
 };

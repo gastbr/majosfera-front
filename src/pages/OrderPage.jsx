@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+
+
 import api from "../services/axios";
 
 const OrderPage = () => {
@@ -39,11 +39,11 @@ const OrderPage = () => {
             .map((order) =>
               order.id === orderId
                 ? {
-                    ...order,
-                    products: order.products.filter(
-                      (product) => product.id !== productId
-                    ),
-                  }
+                  ...order,
+                  products: order.products.filter(
+                    (product) => product.id !== productId
+                  ),
+                }
                 : order
             )
             .filter((order) => order.products.length > 0) // Filtra pedidos vacíos
@@ -66,7 +66,6 @@ const OrderPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
-      <Header />
       <main className="flex-1 flex flex-col items-center p-6 text-center">
         <h1 className="text-4xl font-extrabold mb-4">Tus Pedidos</h1>
 
@@ -118,7 +117,6 @@ const OrderPage = () => {
           Confirmar Pedido
         </Link>
       </main>
-      <Footer />
     </div>
   );
 };

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import Footer from "../components/Footer";
 
 const AssociationCRUDPage = () => {
   const [search, setSearch] = useState("");
@@ -62,16 +61,6 @@ const AssociationCRUDPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
-      {/* Header */}
-      <header className="bg-amber-600 text-white py-4 px-6 flex justify-between items-center shadow-md">
-        <h1 className="text-2xl font-bold">Gestión de Asociaciones</h1>
-        <Link
-          to="/"
-          className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
-        >
-          Inicio
-        </Link>
-      </header>
 
       {/* Search Bar */}
       <div className="p-4 w-full max-w-lg mx-auto">
@@ -178,7 +167,6 @@ const AssociationCRUDPage = () => {
         </Link>
       </div>
 
-      <Footer />
     </div>
   );
 };

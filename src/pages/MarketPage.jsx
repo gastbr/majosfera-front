@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router";
-import Header from "../components/Header";
+
 
 const API_URL = import.meta.env.VITE_API_URL; // URL del backend desde .env
 
@@ -100,7 +100,6 @@ const MarketPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900 overflow-x-hidden">
-      <Header />
       {/* Contenedor principal con sidebar y contenido, responsive */}
       <div className="flex flex-col md:flex-row flex-1">
         {/* Sidebar de filtros */}

@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -79,11 +77,9 @@ const AssociationListPage = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
-        <Header />
         <main className="flex-1 flex items-center justify-center">
           <p className="text-xl text-amber-600">Cargando asociaciones...</p>
         </main>
-        <Footer />
       </div>
     );
   }
@@ -91,18 +87,15 @@ const AssociationListPage = () => {
   if (error) {
     return (
       <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
-        <Header />
         <main className="flex-1 flex items-center justify-center">
           <p className="text-xl text-red-600">Error: {error}</p>
         </main>
-        <Footer />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900 overflow-x-hidden">
-      <Header />
       <main className="flex-1 flex flex-col items-center p-6">
         <h1 className="text-4xl font-extrabold mb-4">Explora Asociaciones</h1>
         <p className="text-lg text-amber-800 mb-6 max-w-lg text-center">
@@ -189,7 +182,6 @@ const AssociationListPage = () => {
           </div>
         )}
       </main>
-      <Footer />
     </div>
   );
 };

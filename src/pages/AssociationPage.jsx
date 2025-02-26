@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 
 const API_URL = import.meta.env.VITE_API_URL; // URL del backend desde .env
 
@@ -82,7 +80,6 @@ const AssociationPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900 overflow-x-hidden">
-      <Header />
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center p-6">
@@ -174,7 +171,6 @@ const AssociationPage = () => {
         )}
       </main>
 
-      <Footer />
     </div>
   );
 };

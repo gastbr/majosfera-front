@@ -1,11 +1,8 @@
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import { Link } from "react-router";
 
 const LandingPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900 overflow-x-hidden">
-      <Header />
 
       {/* Contenido principal */}
       <main className="flex-1 flex flex-col items-center justify-center p-4 md:p-6 text-center">
@@ -59,7 +56,6 @@ const LandingPage = () => {
         </div>
       </main>
 
-      <Footer />
     </div>
   );
 };

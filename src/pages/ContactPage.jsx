@@ -1,7 +1,4 @@
 import { useState, useEffect } from "react";
-//import { Link } from "react-router";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 
 const API_URL = import.meta.env.VITE_API_URL; // URL del backend desde .env
 
@@ -67,7 +64,6 @@ const ContactPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900 overflow-x-hidden">
-      <Header />
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-center p-6">
         <h1 className="text-4xl font-extrabold mb-4">Contáctanos</h1>
@@ -123,15 +119,13 @@ const ContactPage = () => {
 
         {status && (
           <p
-            className={`mt-4 text-lg transition-opacity duration-1000 ${
-              fade ? "opacity-0" : "opacity-100"
-            } ${status.success ? "text-green-600" : "text-red-600"}`}
+            className={`mt-4 text-lg transition-opacity duration-1000 ${fade ? "opacity-0" : "opacity-100"
+              } ${status.success ? "text-green-600" : "text-red-600"}`}
           >
             {status.message}
           </p>
         )}
       </main>
-      <Footer />
     </div>
   );
 };
