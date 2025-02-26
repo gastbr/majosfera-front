@@ -1,9 +1,11 @@
+//Header.jsx
+
 import { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { Link } from "react-router";
 
 const Header = () => {
-  const { user } = useContext(AppContext);
+  const { user, logout } = useContext(AppContext); // Assuming you have a logout function in your context
 
   return (
     <header className="bg-amber-600 text-white py-4 px-4 md:px-8 shadow-md flex justify-between items-center">
@@ -50,12 +52,20 @@ const Header = () => {
 
         {/* Mostrar nombre del usuario si está logueado */}
         {user ? (
-          <Link
-            to="/profile"
-            className="px-4 py-2 rounded-lg bg-white text-amber-600 font-bold"
-          >
-            {`Hola, ${user.userName}`}
-          </Link>
+          <>
+            <Link
+              to="/profile"
+              className="px-4 py-2 rounded-lg bg-white text-amber-600 font-bold"
+            >
+              {`Hola, ${user.userName}`}
+            </Link>
+            <button
+              onClick={logout}
+              className="px-4 py-2 rounded-lg bg-red-600 text-white"
+            >
+              Cerrar Sesión
+            </button>
+          </>
         ) : (
           <Link
             to="/login"
