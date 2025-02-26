@@ -1,22 +1,53 @@
-import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+/* eslint-disable react/prop-types */
+import { useReducer, useEffect } from "react";
 import api from "../services/axios";
 import { AppContext } from "./AppContext";
 
+// Define the initial state
+const initialState = {
+  user: null,
+  favorites: [],
+  cart: [],
+};
+
+// Define the reducer
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "SET_USER":
+      return { ...state, user: action.payload };
+    case "ADD_FAVORITE":
+      return { ...state, favorites: [...state.favorites, action.payload] };
+    case "REMOVE_FAVORITE":
+      return {
+        ...state,
+        favorites: state.favorites.filter(
+          (favorite) => favorite !== action.payload
+        ),
+      };
+    case "ADD_TO_CART":
+      return { ...state, cart: [...state.cart, action.payload] };
+    case "REMOVE_FROM_CART":
+      return {
+        ...state,
+        cart: state.cart.filter((item) => item !== action.payload),
+      };
+    default:
+      return state;
+  }
+};
+
 export const AppProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [favorites, setFavorites] = useState([]);
-  const [cart, setCart] = useState([]);
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   // 🔹 Cargar usuario autenticado y su carrito al iniciar
   useEffect(() => {
     const fetchUserAndCart = async () => {
       try {
         const userResponse = await api.get("/api/user");
-        setUser(userResponse.data);
+        dispatch({ type: "SET_USER", payload: userResponse.data });
 
         const cartResponse = await api.get("/api/orders");
-        setCart(cartResponse.data.products || []); // Se asegura de que el carrito contenga productos
+        dispatch({ type: "ADD_TO_CART", payload: cartResponse.data.products });
       } catch (error) {
         console.error("Error al obtener usuario o carrito:", error);
       }
@@ -31,7 +62,7 @@ export const AppProvider = ({ children }) => {
       const response = await api.post("/api/favorites", {
         product_id: productId,
       });
-      setFavorites(response.data.favorites);
+      dispatch({ type: "ADD_FAVORITE", payload: response.data.favorites });
     } catch (error) {
       console.error("Error actualizando favoritos:", error);
     }
@@ -41,7 +72,7 @@ export const AppProvider = ({ children }) => {
   const addToCart = async (productId) => {
     try {
       const response = await api.post("/api/cart", { product_id: productId });
-      setCart(response.data.cart);
+      dispatch({ type: "ADD_TO_CART", payload: response.data.cart });
     } catch (error) {
       console.error("Error actualizando carrito:", error);
     }
@@ -52,8 +83,7 @@ export const AppProvider = ({ children }) => {
     try {
       const response = await api.delete(`/api/orders/products/${productId}`);
       console.log("Producto eliminado:", response.data);
-
-      setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
+      dispatch({ type: "REMOVE_FROM_CART", payload: productId });
     } catch (error) {
       console.error("Error eliminando producto del carrito:", error);
     }
@@ -61,24 +91,9 @@ export const AppProvider = ({ children }) => {
 
   return (
     <AppContext.Provider
-      value={{
-        user,
-        favorites,
-        cart,
-        setCart,
-        toggleFavorite,
-        addToCart,
-        removeFromCart, // ✅ Ahora puedes eliminar productos del carrito
-      }}
+      value={{ state, dispatch, toggleFavorite, addToCart, removeFromCart }}
     >
       {children}
     </AppContext.Provider>
   );
 };
-
-// ✅ Validación de `children` con PropTypes
-AppProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export default AppProvider;
