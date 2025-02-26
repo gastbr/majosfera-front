@@ -63,7 +63,7 @@ const ContactPage = () => {
   }, [status]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900 overflow-x-hidden">
+    <>
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-center p-6">
         <h1 className="text-4xl font-extrabold mb-4">Contáctanos</h1>
@@ -126,7 +126,7 @@ const ContactPage = () => {
           </p>
         )}
       </main>
-    </div>
+    </>
   );
 };
 

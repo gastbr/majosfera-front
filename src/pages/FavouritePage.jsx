@@ -24,7 +24,7 @@ const FavouritePage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900 overflow-x-hidden">
+    <>
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center p-6 text-center">
         <h1 className="text-4xl font-extrabold mb-4">
@@ -75,7 +75,7 @@ const FavouritePage = () => {
           ))}
         </div>
       </main>
-    </div>
+    </>
   );
 };
 

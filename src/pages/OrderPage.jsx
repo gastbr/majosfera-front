@@ -65,7 +65,7 @@ const OrderPage = () => {
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
+    <>
       <main className="flex-1 flex flex-col items-center p-6 text-center">
         <h1 className="text-4xl font-extrabold mb-4">Tus Pedidos</h1>
 
@@ -117,7 +117,7 @@ const OrderPage = () => {
           Confirmar Pedido
         </Link>
       </main>
-    </div>
+    </>
   );
 };
 

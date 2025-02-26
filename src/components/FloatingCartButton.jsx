@@ -1,14 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CartDrawer from "./CartDrawer";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
 const FloatingCartButton = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [animate, setAnimate] = useState(false);
+    const { cart } = useContext(CartContext);
+
+    useEffect(() => {
+        if (cart.length > 0) {
+            setAnimate(true);
+            setTimeout(() => {
+                setAnimate(false);
+            }, 500);
+        }
+    }, [cart]);
 
     return (
         <>
             <button
+                className={`fixed bottom-6 right-6 bg-sky-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-sky-500 transition ${animate ? "animate-bounce" : ""
+                    }`}
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-6 right-6 bg-amber-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-amber-700 transition"
             >
                 🛒 Ver Carrito
             </button>

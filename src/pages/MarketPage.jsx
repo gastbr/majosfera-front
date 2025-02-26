@@ -114,7 +114,7 @@ const MarketPage = () => {
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
+    <>
 
       {/* Contenedor principal con sidebar y contenido */}
       <div className="flex flex-col md:flex-row flex-1 p-6">
@@ -210,7 +210,7 @@ const MarketPage = () => {
       </div>
 
       <FloatingCartButton cart={cart} />
-    </div>
+    </>
   );
 };
 

@@ -95,7 +95,7 @@ const AssociationListPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900 overflow-x-hidden">
+    <>
       <main className="flex-1 flex flex-col items-center p-6">
         <h1 className="text-4xl font-extrabold mb-4">Explora Asociaciones</h1>
         <p className="text-lg text-amber-800 mb-6 max-w-lg text-center">
@@ -182,7 +182,7 @@ const AssociationListPage = () => {
           </div>
         )}
       </main>
-    </div>
+    </>
   );
 };
 

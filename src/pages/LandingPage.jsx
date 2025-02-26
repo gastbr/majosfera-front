@@ -2,8 +2,7 @@ import { Link } from "react-router";
 
 const LandingPage = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900 overflow-x-hidden">
-
+    <>
       {/* Contenido principal */}
       <main className="flex-1 flex flex-col items-center justify-center p-4 md:p-6 text-center">
         <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4">
@@ -55,8 +54,7 @@ const LandingPage = () => {
           </Link>
         </div>
       </main>
-
-    </div>
+    </>
   );
 };
 
