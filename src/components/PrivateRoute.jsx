@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
-// src/components/PrivateRoute.js
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect } from 'react-router';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
     const isAuthenticated = !!sessionStorage.getItem('token');

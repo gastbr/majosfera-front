@@ -1,6 +1,4 @@
 import api from "./axios";
-import { useContext } from "react";
-import { AppContext } from "../context/AppContext";
 
 // Función para obtener el token desde localStorage
 export const getToken = () => localStorage.getItem("token");
@@ -41,7 +39,7 @@ export async function login(email, password, dispatch) {
     const data = await response.json();
     // Guarda el token en localStorage
     localStorage.setItem("token", data.token);
-    dispatch({ type: "SET_USERNAME", payload: data.userName });
+    dispatch({ type: "SET_USER", payload: data });
     return { status: response.status, ...data };
   } catch (error) {
     console.error("Error en el servicio login:", error);
@@ -55,7 +53,13 @@ export const logout = () => {
     .post(
       "/api/logout",
       {},
-      { headers: { Authorization: `Bearer ${getToken()}` } }
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        }
+      }
     )
     .then((response) => {
       console.log("==> logout successful:", response);

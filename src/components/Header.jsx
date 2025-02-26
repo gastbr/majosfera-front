@@ -1,13 +1,16 @@
 import { useContext, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { Link, useLocation } from "react-router";
+import { logout } from "../services/auth";
 
 
 const Header = () => {
-  const { user, logout } = useContext(AppContext);
+  const { state } = useContext(AppContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathName = useLocation().pathname;
   console.log("pathName: ", pathName);
+
+  console.log("userName: ", state.user?.userName);
 
   return (
     <header className="bg-amber-600 text-white py-4 px-4 md:px-8 shadow-md flex justify-between items-center md:flex-row flex-col">
@@ -85,16 +88,16 @@ const Header = () => {
         </Link>
 
         {/* Mostrar nombre del usuario si está logueado */}
-        {user ? (
+        {state.user ? (
           <>
             <Link
               to="/profile"
               className="px-4 py-2 text-lg font-bold rounded-t-lg border-b-2 border-white bg-amber-600 hover:bg-amber-700 font-bold"
             >
-              {`Hola, ${user.userName}`}
+              {`Hola, ${state.user?.userName}`}
             </Link>
             <button
-              onClick={logout}
+              onClick={() => (logout())}
               className="px-4 py-2 rounded-lg bg-red-600 text-white"
             >
               Cerrar Sesión
