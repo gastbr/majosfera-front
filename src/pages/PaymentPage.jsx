@@ -1,14 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router";
+import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { user } from "../services/auth";
 
 const PaymentPage = () => {
   const [paymentMethod, setPaymentMethod] = useState("credit-card");
   const [address, setAddress] = useState("");
-  const [userData] = useState({
-    name: "Juan Pérez",
-    email: "juan@example.com",
-  });
+  const [userData, setUserData] = useState(null);
+
+  // Cargar datos del usuario autenticado
+  useEffect(() => {
+    user()
+      .then((data) => {
+        setUserData(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching user:", error);
+      });
+  }, []);
 
   const handlePaymentChange = (e) => {
     setPaymentMethod(e.target.value);
@@ -18,27 +28,28 @@ const PaymentPage = () => {
     setAddress(e.target.value);
   };
 
+  if (!userData) {
+    return (
+      <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
+        <Header />
+        <main className="flex-1 flex items-center justify-center p-6">
+          <p className="text-xl">Cargando datos del usuario...</p>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
-      {/* Header */}
-      <header className="bg-amber-600 text-white py-4 px-6 flex justify-between items-center shadow-md">
-        <h1 className="text-2xl font-bold">Proceso de Pago</h1>
-        <Link
-          to="/"
-          className="bg-white text-amber-600 px-4 py-2 rounded-lg text-lg hover:bg-gray-200 transition"
-        >
-          Inicio
-        </Link>
-      </header>
-
-      {/* Main Content */}
+      <Header />
       <main className="flex-1 flex flex-col items-center p-6 text-center">
         <h1 className="text-4xl font-extrabold mb-4">Detalles de Pago</h1>
         <p className="text-lg text-amber-800 mb-6 max-w-lg">
           Completa tu información para finalizar la compra.
         </p>
 
-        {/* User Data */}
+        {/* Datos del usuario */}
         <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md text-left">
           <h2 className="text-2xl font-bold mb-4">Datos del Usuario</h2>
           <p>
@@ -49,7 +60,7 @@ const PaymentPage = () => {
           </p>
         </div>
 
-        {/* Address Input */}
+        {/* Dirección de Envío */}
         <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md text-left mt-4">
           <h2 className="text-2xl font-bold mb-4">Dirección de Envío</h2>
           <input
@@ -61,7 +72,7 @@ const PaymentPage = () => {
           />
         </div>
 
-        {/* Payment Method */}
+        {/* Método de Pago */}
         <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md text-left mt-4">
           <h2 className="text-2xl font-bold mb-4">Método de Pago</h2>
           <select
@@ -71,19 +82,18 @@ const PaymentPage = () => {
           >
             <option value="credit-card">Tarjeta de Crédito</option>
             <option value="paypal">PayPal</option>
-            <option value="bank-transfer">Transferencia Bancaria</option>
+            <option value="bank-transfer">Bizum</option>
           </select>
         </div>
 
-        {/* Confirm Button */}
+        {/* Botón de Confirmación */}
         <Link
-          to="/confirmation"
+          to=""
           className="mt-6 bg-green-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-green-700 transition"
         >
           Confirmar Pago
         </Link>
       </main>
-
       <Footer />
     </div>
   );
