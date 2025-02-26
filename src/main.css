@@ -1,7 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Cookie&family=Miriam+Libre:wght@400..700&display=swap');
 @import "tailwindcss";
 
 .animate-bounce {
     animation: bounce 0.7s ease-in-out;
+}
+
+body {
+    font-family: 'Miriam Libre', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.title-text {
+    font-family: 'Cookie', cursive;
 }
 
 @keyframes bounce {
@@ -14,4 +26,13 @@
     50% {
         transform: scale(1.2);
     }
+}
+
+.landing-bg {
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(216, 134, 11, 0.2)), url('../public/landing-bg.jpg');
+    width: 100vw;
+    height: 100vh;
 }

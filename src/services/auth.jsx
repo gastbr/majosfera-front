@@ -1,4 +1,6 @@
 import api from "./axios";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
 // Función para obtener el token desde localStorage
 export const getToken = () => localStorage.getItem("token");
@@ -18,7 +20,7 @@ export const user = () => {
 };
 
 // Login: realiza una solicitud POST al endpoint /api/login
-export async function login(email, password) {
+export async function login(email, password, dispatch) {
   try {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
       method: "POST",
@@ -39,6 +41,7 @@ export async function login(email, password) {
     const data = await response.json();
     // Guarda el token en localStorage
     localStorage.setItem("token", data.token);
+    dispatch({ type: "SET_USERNAME", payload: data.userName });
     return { status: response.status, ...data };
   } catch (error) {
     console.error("Error en el servicio login:", error);

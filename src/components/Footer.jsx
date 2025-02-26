@@ -1,7 +1,11 @@
 export default function Footer() {
   return (
     <footer className="bg-amber-600 text-white py-4 px-4 text-center text-sm">
-      <div className="flex flex-col items-center">
+      <div className="flex items-center justify-around">
+        <p>
+          &copy; {new Date().getFullYear()} Majosfera - Todos los derechos
+          reservados.
+        </p>
         {/* Sección de certificados */}
         <div className="flex flex-wrap justify-center gap-4 mb-4">
           <img
@@ -23,10 +27,6 @@ export default function Footer() {
             className="w-16 object-contain"
           />
         </div>
-        <p>
-          &copy; {new Date().getFullYear()} Majosfera - Todos los derechos
-          reservados.
-        </p>
       </div>
     </footer>
   );

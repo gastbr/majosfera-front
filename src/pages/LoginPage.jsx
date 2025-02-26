@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AppContext } from "../context/AppContext";
 import { Link, useNavigate } from "react-router";
 import { login } from "../services/auth";
 
 const LoginPage = () => {
+  const { dispatch } = useContext(AppContext);
   const [userData, setUserData] = useState({
     email: "user@test.com",
     password: "123",
@@ -12,7 +14,7 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await login(userData.email, userData.password);
+      const response = await login(userData.email, userData.password, dispatch);
       if (response.status === 200) {
         navigate("/profile");
       } else {
