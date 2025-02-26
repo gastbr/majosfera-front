@@ -19,17 +19,29 @@ const RegisterProductPage = () => {
   const [associations, setAssociations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
+  const [loggedAssociationId, setLoggedAssociationId] = useState(""); // ID de la asociación logueada
 
-  // Cargar categorías y asociaciones desde la API
+  // Cargar datos de usuario y asociaciones desde la API
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [categoryRes, associationRes] = await Promise.all([
+        const [userRes, categoryRes, associationRes] = await Promise.all([
+          api.get("/api/user"), // Obtener datos del usuario autenticado
           api.get("/api/categories"),
           api.get("/api/associations"),
         ]);
+
+        const userAssociationId = userRes.data.association_id || ""; // Obtener ID de asociación del usuario
+        setLoggedAssociationId(userAssociationId);
+
         setCategories(categoryRes.data);
         setAssociations(associationRes.data);
+
+        // Si el usuario tiene una asociación, preseleccionarla en el formulario
+        setProductData((prev) => ({
+          ...prev,
+          association_id: userAssociationId,
+        }));
       } catch (error) {
         console.error("Error al obtener datos:", error);
       }
@@ -93,7 +105,7 @@ const RegisterProductPage = () => {
         price: "",
         stock: "",
         category_id: "",
-        association_id: "",
+        association_id: loggedAssociationId, // Volver a la asociación logueada por defecto
         image_url: "",
         image_file: null,
       });
@@ -173,7 +185,7 @@ const RegisterProductPage = () => {
               ))}
             </select>
 
-            {/* Selector de Asociación */}
+            {/* Selector de Asociación (preseleccionando la del usuario logueado) */}
             <select
               name="association_id"
               className="w-full p-2 border rounded-lg"
@@ -227,14 +239,8 @@ const RegisterProductPage = () => {
             </button>
           </form>
 
-          {/* Mostrar mensaje de éxito o error */}
           {message.text && (
-            <div
-              className={`mt-4 text-lg font-semibold px-4 py-2 rounded-lg ${message.type === "success"
-                  ? "bg-green-200 text-green-800"
-                  : "bg-red-200 text-red-800"
-                }`}
-            >
+            <div className={`mt-4 text-lg font-semibold px-4 py-2 rounded-lg ${message.type === "success" ? "bg-green-200 text-green-800" : "bg-red-200 text-red-800"}`}>
               {message.text}
             </div>
           )}
