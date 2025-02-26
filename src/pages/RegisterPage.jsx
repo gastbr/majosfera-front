@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 
 const API_URL = import.meta.env.VITE_API_URL; // Asegúrate de que apunta a tu backend
 
@@ -60,7 +58,7 @@ const RegisterPage = () => {
       } else {
         alert(
           "Error en el registro: " +
-            (data.error || data.message || "Error desconocido")
+          (data.error || data.message || "Error desconocido")
         );
       }
     } catch (error) {
@@ -73,7 +71,6 @@ const RegisterPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
-      <Header />
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-center p-6">
         <h1 className="text-4xl font-extrabold mb-4">Crea tu cuenta</h1>
@@ -143,7 +140,6 @@ const RegisterPage = () => {
           </Link>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };

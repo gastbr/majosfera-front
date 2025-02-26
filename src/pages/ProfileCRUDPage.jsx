@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
 import { Link } from "react-router";
-import Footer from "../components/Footer";
+
 
 const ProfileCRUDPage = ({ isAdmin }) => {
   const [userData, setUserData] = useState({
@@ -99,7 +99,6 @@ const ProfileCRUDPage = ({ isAdmin }) => {
         </div>
       </main>
 
-      <Footer />
     </div>
   );
 };

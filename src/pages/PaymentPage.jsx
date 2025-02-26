@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+
+
 import { user } from "../services/auth";
 
 const PaymentPage = () => {
@@ -31,18 +31,15 @@ const PaymentPage = () => {
   if (!userData) {
     return (
       <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
-        <Header />
         <main className="flex-1 flex items-center justify-center p-6">
           <p className="text-xl">Cargando datos del usuario...</p>
         </main>
-        <Footer />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
-      <Header />
       <main className="flex-1 flex flex-col items-center p-6 text-center">
         <h1 className="text-4xl font-extrabold mb-4">Detalles de Pago</h1>
         <p className="text-lg text-amber-800 mb-6 max-w-lg">
@@ -94,7 +91,6 @@ const PaymentPage = () => {
           Confirmar Pago
         </Link>
       </main>
-      <Footer />
     </div>
   );
 };

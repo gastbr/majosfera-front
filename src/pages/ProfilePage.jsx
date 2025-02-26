@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 import { user, logout, updateUser } from "../services/auth";
 
 const ProfilePage = () => {
@@ -83,7 +81,6 @@ const ProfilePage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900 overflow-x-hidden">
-      <Header />
       <header className="bg-amber-600 text-white py-4 px-6 flex flex-col md:flex-row justify-between items-center shadow-md">
         <h1 className="text-2xl font-bold mb-2 md:mb-0">Perfil de Usuario</h1>
         <div className="flex items-center space-x-4">
@@ -181,7 +178,6 @@ const ProfilePage = () => {
           )}
         </div>
       </main>
-      <Footer />
     </div>
   );
 };

@@ -1,40 +1,40 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router";
-import Header from "../components/Header";
+import AddToCartButton from "../components/AddToCartButton";
+import FloatingCartButton from "../components/FloatingCartButton";
 
-const API_URL = import.meta.env.VITE_API_URL; // URL del backend desde .env
+const API_URL = import.meta.env.VITE_API_URL;
 
 const MarketPage = () => {
-  // Inicializamos el parámetro "search" desde la URL
   const [searchParams, setSearchParams] = useSearchParams();
   const initialSearch = searchParams.get("search") || "";
   const [search, setSearch] = useState(initialSearch);
-  // Estado para el método de ordenación: "price" o "name"
   const [activeSort, setActiveSort] = useState("price");
-  // Dirección de ordenación: "asc" o "desc"
   const [sortDirection, setSortDirection] = useState("asc");
   const [filterCategory, setFilterCategory] = useState("");
   const [filterAssociation, setFilterAssociation] = useState("");
-  const [favourites, setFavourites] = useState([]);
+  //const [setFavourites] = useState([]);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [associations, setAssociations] = useState([]);
+  const [cart, setCart] = useState(() => JSON.parse(sessionStorage.getItem("cart")) || []);
 
-  // Obtener productos, categorías y asociaciones desde el backend
+  // Paginación
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const productResponse = await fetch(`${API_URL}/api/products`);
-        const productData = await productResponse.json();
-        setProducts(productData);
+        const [productRes, categoryRes, associationRes] = await Promise.all([
+          fetch(`${API_URL}/api/products`),
+          fetch(`${API_URL}/api/categories`),
+          fetch(`${API_URL}/api/associations`),
+        ]);
 
-        const categoryResponse = await fetch(`${API_URL}/api/categories`);
-        const categoryData = await categoryResponse.json();
-        setCategories(categoryData);
-
-        const associationResponse = await fetch(`${API_URL}/api/associations`);
-        const associationData = await associationResponse.json();
-        setAssociations(associationData);
+        setProducts(await productRes.json());
+        setCategories(await categoryRes.json());
+        setAssociations(await associationRes.json());
       } catch (error) {
         console.error("Error al obtener datos:", error);
       }
@@ -42,70 +42,86 @@ const MarketPage = () => {
     fetchData();
   }, []);
 
+  // 🔹 Manejo de búsqueda y actualización de parámetros en la URL
   const handleSearchChange = (e) => {
-    const value = e.target.value;
+    const value = e.target.value.toLowerCase();
     setSearch(value);
-    setSearchParams({ search: value });
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      if (value) {
+        params.set("search", value);
+      } else {
+        params.delete("search");
+      }
+      return params;
+    });
+    setCurrentPage(1);
   };
 
-  // Alternar ordenación por precio
+  // 🔹 Alternar ordenación por precio
   const handleSortPrice = () => {
-    if (activeSort === "price") {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setActiveSort("price");
-      setSortDirection("asc");
-    }
+    setActiveSort("price");
+    setSortDirection(sortDirection === "asc" ? "desc" : "asc");
   };
 
-  // Alternar ordenación por nombre
+  // 🔹 Alternar ordenación por nombre
   const handleSortName = () => {
-    if (activeSort === "name") {
-      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
-    } else {
-      setActiveSort("name");
-      setSortDirection("asc");
-    }
+    setActiveSort("name");
+    setSortDirection(sortDirection === "asc" ? "desc" : "asc");
   };
 
-  const toggleFavourite = (product) => {
-    setFavourites((prev) =>
-      prev.some((fav) => fav.id === product.id)
-        ? prev.filter((fav) => fav.id !== product.id)
-        : [...prev, product]
-    );
+  // 🔹 Agregar/quitar favoritos
+  /*   const toggleFavourite = (product) => {
+      setFavourites((prev) =>
+        prev.some((fav) => fav.id === product.id)
+          ? prev.filter((fav) => fav.id !== product.id)
+          : [...prev, product]
+      );
+    }; */
+
+  // 🔹 Agregar productos al carrito
+  const handleAddToCart = (product) => {
+    setCart((prevCart) => {
+      const updatedCart = [...prevCart, product];
+      sessionStorage.setItem("cart", JSON.stringify(updatedCart));
+      return updatedCart;
+    });
   };
 
-  // Filtrar productos según búsqueda, categoría y asociación
+  // 🔹 Filtrar productos según búsqueda, categoría y asociación
   const filteredProducts = products.filter(
     (product) =>
       product.name.toLowerCase().includes(search.toLowerCase()) &&
-      (filterCategory ? product.category_id == filterCategory : true) &&
-      (filterAssociation ? product.association_id == filterAssociation : true)
+      (filterCategory ? product.category_id.toString() === filterCategory : true) &&
+      (filterAssociation ? product.association_id.toString() === filterAssociation : true)
   );
 
-  // Ordenar según el método y dirección seleccionados
-  const sortedProducts = filteredProducts.sort((a, b) => {
+  // 🔹 Ordenar productos según selección
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
     if (activeSort === "price") {
       return sortDirection === "asc" ? a.price - b.price : b.price - a.price;
-    } else if (activeSort === "name") {
-      const nameA = a.name.toLowerCase();
-      const nameB = b.name.toLowerCase();
-      if (nameA < nameB) return sortDirection === "asc" ? -1 : 1;
-      if (nameA > nameB) return sortDirection === "asc" ? 1 : -1;
-      return 0;
     }
-    return 0;
+    return sortDirection === "asc"
+      ? a.name.localeCompare(b.name)
+      : b.name.localeCompare(a.name);
   });
 
+  // 🔹 Paginación
+  const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
+  const displayedProducts = sortedProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
-    <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900 overflow-x-hidden">
-      <Header />
-      {/* Contenedor principal con sidebar y contenido, responsive */}
-      <div className="flex flex-col md:flex-row flex-1">
+    <div className="min-h-screen flex flex-col bg-amber-100 text-amber-900">
+
+      {/* Contenedor principal con sidebar y contenido */}
+      <div className="flex flex-col md:flex-row flex-1 p-6">
         {/* Sidebar de filtros */}
-        <aside className="w-full md:w-1/4 p-6 bg-amber-100 shadow-md">
+        <aside className="w-full md:w-1/4 p-6 bg-white shadow-md rounded-lg">
           <h2 className="text-xl font-bold mb-4">Filtros</h2>
+
           {/* Filtro de Categoría */}
           <label className="block mb-2">Categoría:</label>
           <select
@@ -114,16 +130,13 @@ const MarketPage = () => {
             onChange={(e) => setFilterCategory(e.target.value)}
           >
             <option value="">Todas</option>
-            {categories.length > 0 ? (
-              categories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.name}
-                </option>
-              ))
-            ) : (
-              <option value="">No hay categorías disponibles</option>
-            )}
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
           </select>
+
           {/* Filtro de Asociación */}
           <label className="block mb-2">Asociación:</label>
           <select
@@ -132,20 +145,17 @@ const MarketPage = () => {
             onChange={(e) => setFilterAssociation(e.target.value)}
           >
             <option value="">Todas</option>
-            {associations.length > 0 ? (
-              associations.map((association) => (
-                <option key={association.id} value={association.id}>
-                  {association.name}
-                </option>
-              ))
-            ) : (
-              <option value="">No hay asociaciones disponibles</option>
-            )}
+            {associations.map((association) => (
+              <option key={association.id} value={association.id}>
+                {association.name}
+              </option>
+            ))}
           </select>
         </aside>
+
         {/* Contenido principal */}
         <div className="flex-1 flex flex-col">
-          {/* Barra de búsqueda en bloque independiente */}
+          {/* Barra de búsqueda */}
           <div className="relative p-4 w-full max-w-4xl mx-auto">
             <input
               type="text"
@@ -154,121 +164,52 @@ const MarketPage = () => {
               value={search}
               onChange={handleSearchChange}
             />
-            {search && (
-              <button
-                onClick={() => {
-                  setSearch("");
-                  setSearchParams({ search: "" });
-                }}
-                className="absolute right-7 top-1/2 transform -translate-y-1/2 text-gray-700 hover:text-gray-900"
-              >
-                ✕
-              </button>
-            )}
           </div>
 
-          {/* Botones de ordenación en bloque separado */}
+          {/* Botones de ordenación */}
           <div className="p-4 w-full max-w-4xl mx-auto flex justify-center space-x-4">
-            <button
-              onClick={handleSortPrice}
-              className="bg-amber-600 text-white px-2 md:px-4 h-10 rounded-lg hover:bg-amber-700 transition text-[0.7rem] md:text-sm flex items-center justify-center"
-            >
-              Ordenar Precio{" "}
-              {activeSort === "price"
-                ? sortDirection === "asc"
-                  ? "↓"
-                  : "↑"
-                : ""}
+            <button onClick={handleSortPrice} className="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition">
+              Ordenar por Precio {sortDirection === "asc" ? "↓" : "↑"}
             </button>
-            <button
-              onClick={handleSortName}
-              className="bg-amber-600 text-white px-2 md:px-4 h-10 rounded-lg hover:bg-amber-700 transition text-[0.7rem] md:text-sm flex items-center justify-center"
-            >
-              Ordenar Alfabéticamente{" "}
-              {activeSort === "name"
-                ? sortDirection === "asc"
-                  ? "A-Z"
-                  : "Z-A"
-                : ""}
+            <button onClick={handleSortName} className="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition">
+              Ordenar Alfabéticamente {sortDirection === "asc" ? "A-Z" : "Z-A"}
             </button>
           </div>
+
           {/* Lista de Productos */}
-          <main className="flex-1 flex flex-col items-center p-6">
-            {sortedProducts.length === 0 ? (
-              <p className="text-xl text-gray-600">
-                No hay productos disponibles
-              </p>
-            ) : (
-              <div className="w-full max-w-4xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {sortedProducts.map((product) => (
-                  <div
-                    key={product.id}
-                    className="relative bg-white p-6 rounded-lg shadow-md text-center"
-                  >
-                    {/* Ícono de favorito */}
-                    <button
-                      onClick={() => toggleFavourite(product)}
-                      className="absolute top-2 right-2 flex items-center justify-center p-1 rounded-full bg-white hover:bg-gray-100 transition"
-                    >
-                      {favourites.some((fav) => fav.id === product.id) ? (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-red-600"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                        >
-                          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                        </svg>
-                      ) : (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5 text-red-600"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 21.364l-7.682-7.682a4.5 4.5 0 010-6.364z"
-                          />
-                        </svg>
-                      )}
-                    </button>
-                    <img
-                      src={product.image_url}
-                      alt={product.name}
-                      className="w-full h-auto rounded-lg mb-4"
-                    />
-                    <h2 className="text-2xl font-bold mb-2">{product.name}</h2>
-                    <p className="text-lg text-amber-800 mb-2">
-                      Precio: {product.price}€
-                    </p>
-                    <div className="flex flex-col space-y-2">
-                      <Link
-                        to={`/product/${product.id}`}
-                        className="bg-yellow-400 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition"
-                      >
-                        Ver Producto
-                      </Link>
-                      <Link
-                        to={`/association/${product.association_id}`}
-                        className="bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-                      >
-                        Ver Asociación
-                      </Link>
-                      <button className="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition">
-                        Añadir al Carrito
-                      </button>
-                    </div>
-                  </div>
-                ))}
+          <main className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+            {displayedProducts.map((product) => (
+              <div key={product.id} className="bg-white p-6 rounded-lg shadow-md text-center">
+                <img src={product.image_url} alt={product.name} className="w-full h-auto rounded-lg mb-4" />
+                <h2 className="text-2xl font-bold mb-2">{product.name}</h2>
+                <p className="text-lg text-amber-800 mb-2">Precio: {product.price}€</p>
+
+                <div className="flex flex-col space-y-2">
+                  <Link to={`/product/${product.id}`} className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                    Ver Producto
+                  </Link>
+                  <AddToCartButton product={product} onAddToCart={handleAddToCart} />
+                </div>
               </div>
-            )}
+            ))}
           </main>
+
+          {/* Paginación */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center space-x-4 mt-6">
+              <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1} className="px-4 py-2 bg-gray-300 rounded-lg">
+                Anterior
+              </button>
+              <span>Página {currentPage} de {totalPages}</span>
+              <button onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages} className="px-4 py-2 bg-gray-300 rounded-lg">
+                Siguiente
+              </button>
+            </div>
+          )}
         </div>
       </div>
+
+      <FloatingCartButton cart={cart} />
     </div>
   );
 };
