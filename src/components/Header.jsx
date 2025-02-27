@@ -221,9 +221,9 @@ const Header = () => {
         ) : (
           <Link
             to="/login"
-            className="font-bold p-4 hover:bg-amber-700 rounded-lg"
+            className={`flex items-center text-center rounded-lg font-bold p-4 bg-amber-500 bg-opacity-25 ${pathName === '/login' ? 'border-b-4 border-stone-200 cursor-default' : 'hover:bg-amber-700 hover:text-amber-100'}`}
           >
-            Iniciar Sesión
+            Acceso usuarios
           </Link>
         )}
       </nav>

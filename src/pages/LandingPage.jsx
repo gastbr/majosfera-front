@@ -18,7 +18,7 @@ const LandingPage = () => {
         </h1>
 
         <div className="bg-white p-4 md:p-6 rounded-lg shadow-md w-full max-w-md md:max-w-2xl lg:max-w-4xl mb-6">
-          <p className="text-4xl">{emojisHi[Math.floor(Math.random() * emojisHi.length)]}</p>
+          <p className="text-4xl pb-4">{emojisHi[Math.floor(Math.random() * emojisHi.length)]}</p>
           <p className="text-base md:text-lg text-amber-800">
             Majosfera es un marketplace dedicado a conectar asociaciones con personas interesadas en apoyar sus iniciativas.
           </p>
@@ -26,13 +26,13 @@ const LandingPage = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 max-w-md md:max-w-2xl lg:max-w-4xl mb-6">
           <div className="bg-white p-4 md:p-6 rounded-lg shadow-md text-center">
-            <p className="text-4xl">🔎</p>
+            <p className="text-4xl pb-4">🔎</p>
             <p className="text-base md:text-lg">
               Explora productos y servicios ofrecidos por distintas asociaciones y contribuye a su impacto en la comunidad.
             </p>
           </div>
           <div className="bg-white p-4 md:p-6 rounded-lg shadow-md text-center">
-            <p className="text-4xl">{emojisHandshake[Math.floor(Math.random() * emojisHandshake.length)]}</p>
+            <p className="text-4xl pb-4">{emojisHandshake[Math.floor(Math.random() * emojisHandshake.length)]}</p>
             <p className="text-base md:text-lg">
               Participa en nuestra comunidad y apoya una causa.
             </p>

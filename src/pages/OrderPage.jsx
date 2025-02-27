@@ -1,123 +1,74 @@
-import { useState, useEffect } from "react";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 import { Link } from "react-router";
 
-
-import api from "../services/axios";
-
 const OrderPage = () => {
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  // Cargar los pedidos del usuario
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await api.get("/api/orders");
-        console.log("Pedidos obtenidos:", response.data);
-        setOrders(response.data);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchOrders();
-  }, []);
-
-  // Función para eliminar un producto del pedido
-  const handleRemoveProduct = async (orderId, productId) => {
-    try {
-      const response = await api.delete(
-        `/api/orders/${orderId}/products/${productId}`
-      );
-      console.log("Producto eliminado:", response.data);
-
-      // Actualizar el estado filtrando el producto eliminado
-      setOrders(
-        (prevOrders) =>
-          prevOrders
-            .map((order) =>
-              order.id === orderId
-                ? {
-                  ...order,
-                  products: order.products.filter(
-                    (product) => product.id !== productId
-                  ),
-                }
-                : order
-            )
-            .filter((order) => order.products.length > 0) // Filtra pedidos vacíos
-      );
-    } catch (error) {
-      console.error("Error al eliminar producto del pedido:", error);
-    }
-  };
-
-  if (loading) {
-    return (
-      <p className="text-center text-lg text-amber-800">Cargando pedido...</p>
-    );
-  }
-
-  // Filtrar pedidos sin productos antes de renderizar
-  const filteredOrders = orders.filter(
-    (order) => order.products && order.products.length > 0
-  );
+  const { cart, removeFromCart } = useContext(CartContext);
 
   return (
-    <>
-      <main className="flex-1 flex flex-col items-center p-6 text-center">
-        <h1 className="text-4xl font-extrabold mb-4">Tus Pedidos</h1>
+    <div className="container flex flex-col items-center min-h-screen p-4">
+      {/* White area with the cart content */}
+      <div className="p-4 md:p-6 lg:p-8 bg-stone-100 rounded-lg shadow-lg w-full max-w-4xl">
+        <h2 className="text-2xl font-bold text-gray-800 md:text-3xl lg:text-4xl mb-6">Tu pedido</h2>
 
-        {filteredOrders.length > 0 ? (
-          filteredOrders.map((order) => (
-            <div key={order.id} className="w-full max-w-4xl">
-              <h2 className="text-2xl font-bold my-4">Código #{order.id}</h2>
-
-              {/* Lista de productos del pedido */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {order.products.map((product) => (
-                  <div
-                    key={product.id}
-                    className="bg-white p-6 rounded-lg shadow-md text-center"
-                  >
-                    <img
-                      src={product.image_url}
-                      alt={product.name}
-                      className="w-24 h-24 mx-auto rounded-lg mb-4 object-cover"
-                    />
-                    <h2 className="text-xl font-bold mb-2">{product.name}</h2>
-                    <p className="text-lg text-amber-800 mb-2">
-                      Precio: {product.price}€
-                    </p>
-                    <p className="text-lg text-amber-800 mb-2">
-                      Cantidad: {product.pivot?.quantity || 1}
-                    </p>
-                    <button
-                      onClick={() => handleRemoveProduct(order.id, product.id)}
-                      className="mt-2 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
-                    >
-                      Eliminar
-                    </button>
-                  </div>
-                ))}
+        {/* Table-like layout for product information */}
+        <div className="grid grid-cols-5 gap-4 text-gray-600 font-medium mb-4 border-b pb-2">
+          <span>Imagen</span>
+          <span>Nombre</span>
+          <span>Cantidad</span>
+          <span>Precio</span>
+          <span>Acciones</span>
+        </div>
+        <ul className="divide-y divide-gray-200">
+          {cart.map((item) => (
+            <li key={item.id} className="py-4 grid grid-cols-5 gap-4 items-center">
+              <div className="flex items-center">
+                <img
+                  src={item.image_url}
+                  alt={item.name}
+                  className="w-16 h-16 md:w-20 md:h-20 object-cover rounded-lg"
+                />
               </div>
-            </div>
-          ))
-        ) : (
-          <p className="text-center text-lg text-amber-800">
-            No tienes productos en tu pedido.
-          </p>
-        )}
+              <span className="text-lg font-medium text-gray-800 md:text-xl">{item.name}</span>
+              <span className="text-lg font-medium text-gray-800 md:text-xl">{item.quantity}</span>
+              <span className="text-lg font-medium text-gray-800 md:text-xl">${item.price}</span>
+              <div className="flex justify-end">
+                <button
+                  className="bg-red-600 text-white px-4 py-2 rounded-full hover:bg-red-700 transition duration-200"
+                  onClick={() => removeFromCart(item.id)}
+                >
+                  X
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
 
+      {/* "Continuar" button just below the white box, outside of it */}
+      <div className="w-full max-w-4xl flex justify-end mt-4">
         <Link
           to="/payment"
-          className="mt-6 bg-green-600 text-white px-6 py-3 rounded-lg text-lg hover:bg-green-700 transition"
+          className="bg-sky-600 text-white px-6 py-3 rounded-lg hover:bg-sky-700 transition duration-200 text-lg flex items-center gap-2 shadow-md"
         >
-          Confirmar Pedido
+          Continuar
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
         </Link>
-      </main>
-    </>
+      </div>
+    </div>
   );
 };
 

@@ -12,19 +12,19 @@ export default function Footer() {
             src="/wcag.jpg"
             alt="Certificado WCAG-WAI 2.1"
             title="Cumple con las pautas WCAG 2.1"
-            className="w-16 object-contain"
+            className="w-20 object-contain"
           />
           <img
             src="/Sello 600 EFQM_24-27.jpg"
             alt="Sello 600 EFQM"
             title="Avalan gestión EFQM"
-            className="w-16 object-contain"
+            className="w-8 object-contain"
           />
           <img
             src="/AENOR-logo-redondo-ESP.png"
             alt="Certificado AENOR"
             title="Certificado AENOR"
-            className="w-16 object-contain"
+            className="w-12 object-contain"
           />
         </div>
       </div>
