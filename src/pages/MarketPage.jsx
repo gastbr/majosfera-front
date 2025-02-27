@@ -117,7 +117,7 @@ const MarketPage = () => {
     <>
 
       {/* Contenedor principal con sidebar y contenido */}
-      <div className="flex flex-col md:flex-row flex-1 p-6">
+      <div className="flex flex-col w-full md:flex-row flex-1 p-6">
         {/* Sidebar de filtros */}
         <aside className="w-full md:w-1/4 p-6 bg-white shadow-md rounded-lg">
           <h2 className="text-xl font-bold mb-4">Filtros</h2>
@@ -154,7 +154,7 @@ const MarketPage = () => {
         </aside>
 
         {/* Contenido principal */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col w-full md:w-3/4">
           {/* Barra de búsqueda */}
           <div className="relative p-4 w-full max-w-4xl mx-auto">
             <input
@@ -164,6 +164,18 @@ const MarketPage = () => {
               value={search}
               onChange={handleSearchChange}
             />
+            {search && (
+              <button
+                onClick={() => {
+                  setSearch("");
+                  setSearchParams({ search: "" });
+                  setCurrentPage(1);
+                }}
+                className="absolute right-7 top-1/2 transform -translate-y-1/2 text-gray-700 hover:text-gray-900"
+              >
+                ✕
+              </button>
+            )}
           </div>
 
           {/* Botones de ordenación */}

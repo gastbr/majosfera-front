@@ -8,7 +8,7 @@ export const user = () => {
   return api
     .get("/api/user")
     .then((response) => {
-      console.log("==> user:", response);
+      //console.log("==> user:", response);
       return response.data;
     })
     .catch((error) => {

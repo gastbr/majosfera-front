@@ -38,7 +38,7 @@ const Header = () => {
   }, [setIsDropdownOpen]);
 
   return (
-    <header className="bg-amber-600 text-white py-4 px-4 md:px-8 shadow-md flex justify-between items-center md:flex-row flex-col">
+    <header className="bg-amber-600 text-white py-4 px-4 md:px-8 shadow-md flex justify-between items-center md:flex-row flex-col h-24">
       {/* Logo y nombre de la app */}
       <div className="flex justify-between items-center w-full">
         <div className="flex content-between md:items-center gap-2">
@@ -75,16 +75,71 @@ const Header = () => {
         </button>
       </div>
 
-      {/* Navegación */}
-      <nav className={`space-y-4 mt-4 md:mt-0 ${isBurgerOpen ? 'block md:hidden' : 'hidden'}`}>
+      {/* Burger menu */}
+      <nav className={`flex flex-col fixed top-20 left-0 w-full h-full bg-amber-600 z-50 space-y-4 mt-4 md:mt-0 ${isBurgerOpen ? 'block md:hidden' : 'hidden'}`}>
         <Link
           to="/"
           className={`font-bold p-4 ${pathName === '/' ? 'border-b-4 border-stone-200 cursor-default' : 'hover:bg-amber-700 rounded-lg'}`}
         >
           Inicio
         </Link>
+        <Link
+          to=""
+          className={`font-bold p-4 cursor-not-allowed`}
+        >
+          Eventos
+        </Link>
+        <Link
+          to="/market"
+          className={`font-bold p-4 ${pathName === '/market' ? 'border-b-4 border-stone-200 cursor-default' : 'hover:bg-amber-700 rounded-lg'}`}
+        >
+          Tienda
+        </Link>
+        <Link
+          to="/associations-list"
+          className={`font-bold p-4 ${pathName === '/associations-list' ? 'border-b-4 border-stone-200 cursor-default' : 'hover:bg-amber-700 rounded-lg'}`}
+        >
+          Asociaciones
+        </Link>
+        <Link
+          to="/contact"
+          className={`font-bold p-4 ${pathName === '/contact' ? 'border-b-4 border-stone-200 cursor-default' : 'hover:bg-amber-700 rounded-lg'}`}
+        >
+          Contacto
+        </Link>
+        <Link
+          to="/profile"
+          className={`font-bold p-4 ${pathName === '/profile' ? 'border-b-4 border-stone-200 cursor-default' : 'hover:bg-amber-700 rounded-lg'}`}
+        >
+          Perfil
+        </Link>
+        <Link
+          to="/favourite"
+          className={`font-bold p-4 ${pathName === '/favourite' ? 'border-b-4 border-stone-200 cursor-default' : 'hover:bg-amber-700 rounded-lg'}`}
+        >
+          Favoritos
+        </Link>
+        <Link
+          to="/register-product"
+          className={`font-bold p-4 ${pathName === '/register-product' ? 'border-b-4 border-stone-200 cursor-default' : 'hover:bg-amber-700 rounded-lg'}`}
+        >
+          Registrar producto
+        </Link>
+        <Link
+          to="/CRUD-product"
+          className={`font-bold p-4 ${pathName === '/CRUD-product' ? 'border-b-4 border-stone-200 cursor-default' : 'hover:bg-amber-700 rounded-lg'}`}
+        >
+          Editar productos
+        </Link>
+        <button
+          onClick={() => handleLogout()}
+          className={`font-bold p-4 hover:bg-amber-700 rounded-lg`}
+        >
+          Cerrar sesión
+        </button>
       </nav>
 
+      {/* Navegación */}
       <nav
         className={`md:flex space-x-4 md:space-x-8 mt-4 md:mt-0 hidden`}
       >
@@ -126,8 +181,9 @@ const Header = () => {
               {`Hola, ${state.user?.userName}`}
             </button>
 
+            {/* Dropdown menu */}
             <div
-              className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-md"
+              className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-md z-10"
               style={{ display: isDropdownOpen ? 'block' : 'none' }}
             >
               <Link
@@ -137,13 +193,19 @@ const Header = () => {
                 Perfil
               </Link>
               <Link
-                to="/product-register"
+                to="/favourite"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 text-right"
+              >
+                Favoritos
+              </Link>
+              <Link
+                to="/register-product"
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 text-right"
               >
                 Registrar producto
               </Link>
               <Link
-                to="/product-crud"
+                to="/CRUD-product"
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 text-right"
               >
                 CRUD de productos
