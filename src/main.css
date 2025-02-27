@@ -12,12 +12,17 @@ body {
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    text-shadow: rgba(0, 0, 0, 0.01) 0 0 1px;
 }
 
 .title-text {
     font-family: 'Cookie', cursive;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    letter-spacing: 0.05em;
+    text-shadow: rgba(0, 0, 0, 0.01) 0 0 1px;
 }
 
 @keyframes bounce {
