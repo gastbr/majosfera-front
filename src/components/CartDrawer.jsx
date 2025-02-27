@@ -7,7 +7,7 @@ const CartDrawer = ({ onClose }) => {
     const { cart, removeFromCart } = useContext(CartContext);
 
     const calculateTotal = () => {
-        return cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+        return cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2);
     };
 
     return (
