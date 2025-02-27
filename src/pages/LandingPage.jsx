@@ -9,9 +9,12 @@ const LandingPage = () => {
     <>
       {/* Contenido principal */}
       <main className="landing-bg flex-1 flex flex-col items-center justify-center p-4 md:p-6 text-center">
-        <h1 className="flex flex-col gap-3 text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 text-stone-100">
-          <p>Bienvenido a</p>
-          <p>M A J O S F E R A <span className="text-amber-600 title-text">Market</span></p>
+        <h1 className="flex flex-col gap-10 text-3xl md:text-4xl lg:text-5xl font-extrabold m-4 text-stone-100">
+          <p className="text-2xl">Bienvenido a</p>
+          <p className="flex flex-col justify-center items-center mb-18">
+            <span>M A J O S F E R A</span>
+            <span className="text-amber-600 title-text">Market</span>
+          </p>
         </h1>
 
         <div className="bg-white p-4 md:p-6 rounded-lg shadow-md w-full max-w-md md:max-w-2xl lg:max-w-4xl mb-6">

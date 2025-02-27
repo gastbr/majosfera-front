@@ -32,7 +32,7 @@ body {
     background-size: cover;
     background-position: center;
     position: relative;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(216, 134, 11, 0.2)), url('../public/landing-bg.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(216, 134, 11, 0.2)), url('/landing-bg.jpg');
     width: 100vw;
     height: 100vh;
 }

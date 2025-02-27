@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
-import { user, logout, updateUser } from "../services/auth";
+import { user, updateUser } from "../services/auth";
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState(null);
@@ -11,7 +10,6 @@ const ProfilePage = () => {
     password: "",
     confirmPassword: "",
   });
-  const navigate = useNavigate();
 
   // Cargar los datos del usuario autenticado
   useEffect(() => {
@@ -26,16 +24,6 @@ const ProfilePage = () => {
       }
     });
   }, []);
-
-  const handleLogout = () => {
-    logout()
-      .then(() => {
-        navigate("/"); // Redirige al landing (inicio) tras el logout
-      })
-      .catch((error) => {
-        console.error("Logout failed:", error);
-      });
-  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -80,105 +68,92 @@ const ProfilePage = () => {
   }
 
   return (
-    <>
-      <header className="bg-amber-600 text-white py-4 px-6 flex flex-col md:flex-row justify-between items-center shadow-md">
-        <h1 className="text-2xl font-bold mb-2 md:mb-0">Perfil de Usuario</h1>
-        <div className="flex items-center space-x-4">
-          <button
-            onClick={handleLogout}
-            className="bg-red-600 text-white px-4 py-2 rounded-lg text-lg hover:bg-red-700 transition"
-          >
-            Logout
-          </button>
-        </div>
-      </header>
-      <main className="flex-1 flex flex-col items-center p-6">
-        <h2 className="text-4xl font-extrabold mb-4 text-center">Mi Perfil</h2>
-        <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-          {editing ? (
-            <form onSubmit={handleUpdate}>
-              <div className="mb-4">
-                <label className="block text-sm font-bold mb-1">
-                  Nombre de Usuario
-                </label>
-                <input
-                  type="text"
-                  name="userName"
-                  className="w-full p-2 border rounded-lg"
-                  value={formData.userName}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-bold mb-1">
-                  Nueva Contraseña (opcional)
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  className="w-full p-2 border rounded-lg"
-                  placeholder="Dejar en blanco para no cambiar"
-                  value={formData.password}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-sm font-bold mb-1">
-                  Confirmar Contraseña
-                </label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  className="w-full p-2 border rounded-lg"
-                  placeholder="Confirmar contraseña"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="flex justify-end space-x-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setEditing(false);
-                    setMessage("");
-                  }}
-                  className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition"
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="submit"
-                  className="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition"
-                >
-                  Guardar Cambios
-                </button>
-              </div>
-            </form>
-          ) : (
-            <div className="text-center">
-              <p className="text-lg text-amber-800 mb-2">
-                <span className="font-bold">Usuario: </span>
-                {profile.userName}
-              </p>
-              <p className="text-lg text-amber-800 mb-2">
-                <span className="font-bold">Email: </span>
-                {profile.email}
-              </p>
+    <main className="flex-1 flex flex-col items-center p-6">
+      <h2 className="text-4xl font-extrabold mb-4 text-center">Mi Perfil</h2>
+      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+        {editing ? (
+          <form onSubmit={handleUpdate}>
+            <div className="mb-4">
+              <label className="block text-sm font-bold mb-1">
+                Nombre de Usuario
+              </label>
+              <input
+                type="text"
+                name="userName"
+                className="w-full p-2 border rounded-lg"
+                value={formData.userName}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-bold mb-1">
+                Nueva Contraseña (opcional)
+              </label>
+              <input
+                type="password"
+                name="password"
+                className="w-full p-2 border rounded-lg"
+                placeholder="Dejar en blanco para no cambiar"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-sm font-bold mb-1">
+                Confirmar Contraseña
+              </label>
+              <input
+                type="password"
+                name="confirmPassword"
+                className="w-full p-2 border rounded-lg"
+                placeholder="Confirmar contraseña"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="flex justify-end space-x-2">
               <button
-                onClick={() => setEditing(true)}
+                type="button"
+                onClick={() => {
+                  setEditing(false);
+                  setMessage("");
+                }}
+                className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
                 className="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition"
               >
-                Editar Perfil
+                Guardar Cambios
               </button>
             </div>
-          )}
-          {message && (
-            <div className="mt-4 text-center text-red-600">{message}</div>
-          )}
-        </div>
-      </main>
-    </>
+          </form>
+        ) : (
+          <div className="text-center">
+            <p className="text-lg text-amber-800 mb-2">
+              <span className="font-bold">Usuario: </span>
+              {profile.userName}
+            </p>
+            <p className="text-lg text-amber-800 mb-2">
+              <span className="font-bold">Email: </span>
+              {profile.email}
+            </p>
+            <button
+              onClick={() => setEditing(true)}
+              className="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition"
+            >
+              Editar Perfil
+            </button>
+          </div>
+        )}
+        {message && (
+          <div className="mt-4 text-center text-red-600">{message}</div>
+        )}
+      </div>
+    </main>
   );
 };
 

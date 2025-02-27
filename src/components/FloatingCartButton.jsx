@@ -20,7 +20,7 @@ const FloatingCartButton = () => {
     return (
         <>
             <button
-                className={`fixed bottom-6 right-6 bg-sky-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-sky-500 transition ${animate ? "animate-bounce" : ""
+                className={`z-50 fixed bottom-6 right-6 bg-sky-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-sky-500 transition ${animate ? "animate-bounce" : ""
                     }`}
                 onClick={() => setIsOpen(true)}
             >

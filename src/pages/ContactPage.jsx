@@ -69,8 +69,7 @@ const ContactPage = () => {
         <h1 className="text-4xl font-extrabold mb-4">Contáctanos</h1>
         <p className="text-lg text-amber-800 mb-6 max-w-lg text-center">
           Utiliza este formulario para sugerencias, dudas o para solicitar el
-          alta de una asociación. El administrador te enviará los requisitos por
-          email.
+          alta de una asociación. El administrador te enviará los requisitos por correo electrónico.
         </p>
 
         {/* Formulario de Contacto */}

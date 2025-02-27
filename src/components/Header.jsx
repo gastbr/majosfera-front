@@ -1,118 +1,171 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { logout } from "../services/auth";
 
 
 const Header = () => {
   const { state } = useContext(AppContext);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const pathName = useLocation().pathname;
-  console.log("pathName: ", pathName);
 
-  console.log("userName: ", state.user?.userName);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout()
+      .then(() => {
+        navigate("/"); // Redirige al landing (inicio) tras el logout
+      })
+      .catch((error) => {
+        console.error("Logout failed:", error);
+      });
+  };
+
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest('#user-button') && !event.target.closest('.dropdown-menu')) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [setIsDropdownOpen]);
 
   return (
     <header className="bg-amber-600 text-white py-4 px-4 md:px-8 shadow-md flex justify-between items-center md:flex-row flex-col">
       {/* Logo y nombre de la app */}
-      <div className="flex items-center">
-        <img
-          src="/logo-notext.png"
-          alt="Logo Majosfera"
-          className="w-11 h-1 md:w-12 md:h-12 mr-2"
-        />
-        <Link to="/" className="text-xl md:text-2xl font-bold flex flex-col gap-0">
-          <span className="p-0 m-0">M A J O S F E R A</span><span className="title-text text-3xl p-0 m-0">Market</span>
-        </Link>
+      <div className="flex justify-between items-center w-full">
+        <div className="flex content-between md:items-center gap-2">
+          <Link to="/" className="flex items-center">
+            <img
+              src="/logo-notext.png"
+              alt="Logo Majosfera"
+              className="w-12 h-12 mr-2 md:mr-4"
+            />
+          </Link>
+          <Link to="/" className="text-xl md:text-2xl font-bold flex flex-col gap-0">
+            <span className="p-0 m-0">M A J O S F E R A</span><span className="title-text text-3xl">Market</span>
+          </Link>
+        </div>
+        {/* Burger menu toggle button */}
+        <button
+          className="md:hidden flex justify-center items-center w-8 h-8 bg-white rounded-full"
+          onClick={() => setIsBurgerOpen(!isBurgerOpen)}
+        >
+          <svg
+            className="w-4 h-4 text-amber-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
       </div>
 
-      {/* Burger menu toggle button */}
-      <button
-        className="md:hidden flex justify-center w-8 h-8 bg-white rounded-full"
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-      >
-        <svg
-          className="w-4 h-4 text-amber-600"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
-      </button>
-
       {/* Navegación */}
+      <nav className={`space-y-4 mt-4 md:mt-0 ${isBurgerOpen ? 'block md:hidden' : 'hidden'}`}>
+        <Link
+          to="/"
+          className={`font-bold p-4 ${pathName === '/' ? 'border-b-4 border-stone-200 cursor-default' : 'hover:bg-amber-700 rounded-lg'}`}
+        >
+          Inicio
+        </Link>
+      </nav>
+
       <nav
-        className={`${isMenuOpen ? 'block' : 'hidden'
-          } md:flex space-x-4 md:space-x-8 mt-4 md:mt-0`}
+        className={`md:flex space-x-4 md:space-x-8 mt-4 md:mt-0 hidden`}
       >
         <Link to="/"
-          className="px-4 py-2 text-lg font-bold rounded-t-lg border-b-2 border-white bg-amber-600 hover:bg-amber-700">
+          className={`font-bold p-4 ${pathName === '/' ? 'border-b-4 border-stone-200 cursor-default' : 'hover:bg-amber-700 rounded-lg'}`}>
+          Inicio
+        </Link>
+        <Link to=""
+          className={`cursor-not-allowed font-bold p-4 ${pathName === '' ? 'border-b-4 border-stone-200 cursor-default' : ''}`}>
           Eventos
         </Link>
         <Link
           to="/market"
-          className={`px-4 py-2 text-lg font-bold rounded-t-lg bg-amber-600 ${pathName === '/market' ? ' rounded-b-lg border-sky-800 cursor-default' : 'hover:bg-amber-700'} border-white`}
+          className={`font-bold p-4 ${pathName === '/market' ? 'border-b-4 border-stone-200 cursor-default' : 'hover:bg-amber-700 rounded-lg'}`}
         >
           Tienda
         </Link>
         <Link
           to="/associations-list"
-          className="px-4 py-2 text-lg font-bold rounded-t-lg border-b-2 border-white bg-amber-600 hover:bg-amber-700"
+          className={`font-bold p-4 ${pathName === '/associations-list' ? 'border-b-4 border-stone-200 cursor-default' : 'hover:bg-amber-700 rounded-lg'}`}
         >
           Asociaciones
         </Link>
         <Link
           to="/contact"
-          className="px-4 py-2 text-lg font-bold rounded-t-lg border-b-2 border-white bg-amber-600 hover:bg-amber-700"
+          className={`font-bold p-4 ${pathName === '/contact' ? 'border-b-4 border-stone-200 cursor-default' : 'hover:bg-amber-700 rounded-lg'}`}
         >
           Contacto
         </Link>
-        <Link
-          to="/favourite"
-          className="px-4 py-2 text-lg font-bold rounded-t-lg border-b-2 border-white bg-amber-600 hover:bg-amber-700"
-        >
-          Favoritos
-        </Link>
-        <Link
-          to="/order"
-          className="px-4 py-2 text-lg font-bold rounded-t-lg border-b-2 border-white bg-amber-600 hover:bg-amber-700"
-        >
-          Pedido
-        </Link>
-
         {/* Mostrar nombre del usuario si está logueado */}
         {state.user ? (
-          <>
-            <Link
+          <div className="relative">
+            <button
+              id="user-button"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               to="/profile"
-              className="px-4 py-2 text-lg font-bold rounded-t-lg border-b-2 border-white bg-amber-600 hover:bg-amber-700 font-bold"
+              className="font-semibold px-8 py-3 rounded-full text-sm md:text-base transition-all duration-300 bg-white text-amber-700 hover:bg-amber-50 hover:text-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2 border border-amber-700 shadow-sm hover:shadow-md"
             >
               {`Hola, ${state.user?.userName}`}
-            </Link>
-            <button
-              onClick={() => (logout())}
-              className="px-4 py-2 rounded-lg bg-red-600 text-white"
-            >
-              Cerrar Sesión
             </button>
-          </>
+
+            <div
+              className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-md"
+              style={{ display: isDropdownOpen ? 'block' : 'none' }}
+            >
+              <Link
+                to="/profile"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 text-right"
+              >
+                Perfil
+              </Link>
+              <Link
+                to="/product-register"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 text-right"
+              >
+                Registrar producto
+              </Link>
+              <Link
+                to="/product-crud"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 text-right"
+              >
+                CRUD de productos
+              </Link>
+              <button
+                onClick={() => handleLogout()}
+                className="block px-4 py-2 text-sm text-red-600 hover:bg-red-100 hover:text-red-900 w-full text-right"
+              >
+                Cerrar sesión
+              </button>
+            </div>
+          </div>
         ) : (
           <Link
             to="/login"
-            className="px-4 py-2 text-lg font-bold rounded-t-lg border-b-2 border-white bg-amber-600 hover:bg-amber-700"
+            className="font-bold p-4 hover:bg-amber-700 rounded-lg"
           >
             Iniciar Sesión
           </Link>
         )}
       </nav>
-    </header>
+    </header >
   );
 };
 
